@@ -276,7 +276,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/07/2017_07_07_4/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/08/2017_07_07_4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="lishaowei">
@@ -295,7 +295,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/07/07/2017_07_07_4/" itemprop="url">GreenDao 3.0使用</a></h1>
+                <a class="post-title-link" href="/2017/07/08/2017_07_07_4/" itemprop="url">GreenDao 3.0使用</a></h1>
         
 
         <div class="post-meta">
@@ -307,8 +307,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-07T20:40:41+08:00">
-                2017-07-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-08T00:08:33+08:00">
+                2017-07-08
               </time>
             
 
@@ -347,7 +347,7 @@
 
           
           
-             <span id="/2017/07/07/2017_07_07_4/" class="leancloud_visitors" data-flag-title="GreenDao 3.0使用">
+             <span id="/2017/07/08/2017_07_07_4/" class="leancloud_visitors" data-flag-title="GreenDao 3.0使用">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -405,164 +405,19 @@
 <h4 id="删"><a href="#删" class="headerlink" title="删"></a>删</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mUserDao.deleteByKey(id);</div></pre></td></tr></table></figure>
 <h4 id="改"><a href="#改" class="headerlink" title="改"></a>改</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mUser = new User((long)2,&quot;anye0803&quot;);</div><div class="line">mUserDao.update(mUser);</div></pre></td></tr></table></figure>
 <h4 id="查"><a href="#查" class="headerlink" title="查"></a>查</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">List&lt;User&gt; users = mUserDao.loadAll();</div><div class="line">String userName = &quot;&quot;;</div><div class="line">for (int i = 0; i &lt; users.size(); i++) &#123;</div><div class="line">    userName += users.get(i).getName()+&quot;,&quot;;</div><div class="line">&#125;</div><div class="line">mContext.setText(&quot;查询全部数据==&gt;&quot;+userName);</div></pre></td></tr></table></figure>
-<h3 id="greendao中的注解"><a href="#greendao中的注解" class="headerlink" title="greendao中的注解"></a>greendao中的注解</h3><p>(一) @Entity 定义实体<br>@nameInDb 在数据库中的名字，如不写则为实体中类名<br>@indexes 索引<br>@createInDb 是否创建表，默认为true,false时不创建<br>@schema 指定架构名称为实体<br>@active 无论是更新生成都刷新<br>(二) @Id<br>(三) @NotNull 不为null<br>(四) @Unique 唯一约束<br>(五) @ToMany 一对多<br>(六) @OrderBy 排序<br>(七) @ToOne 一对一<br>(八) @Transient 不存储在数据库中<br>(九) @generated 由greendao产生的构造函数或方法</p>
+<h3 id="greendao中的注解"><a href="#greendao中的注解" class="headerlink" title="greendao中的注解"></a>greendao中的注解</h3><ul>
+<li>@Entity 定义实体<br>@nameInDb 在数据库中的名字，如不写则为实体中类名<br>@indexes 索引<br>@createInDb 是否创建表，默认为true,false时不创建<br>@schema 指定架构名称为实体<br>@active 无论是更新生成都刷新</li>
+<li>@Id</li>
+<li>@NotNull 不为null</li>
+<li>@Unique 唯一约束</li>
+<li>@ToMany 一对多</li>
+<li>@OrderBy 排序</li>
+<li>@ToOne 一对一</li>
+<li>@Transient 不存储在数据库中</li>
+<li>@generated 由greendao产生的构造函数或方法</li>
+</ul>
 <h2 id="Happy-Ending"><a href="#Happy-Ending" class="headerlink" title="Happy Ending"></a>Happy Ending</h2><p>本文主要讲了基本用法，大家都懂。<br>下一章 则讲述怎么更新数据库的时候，保持老版本的数据的保存</p>
 <p>本章特别鸣谢[anye0803]对本文对大力支持</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/07/2017_07_05_1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="lishaowei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/headicon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="lishaowei">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/07/2017_07_05_1/" itemprop="url">Android 动态权限适配方案</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-07T19:48:33+08:00">
-                2017-07-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/07/07/2017_07_05_1/" class="leancloud_visitors" data-flag-title="Android 动态权限适配方案">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>   Google官方在6.0版本上对于应用权限的调用作出了大大的修改。在6.0版本之前，应用App需要用到什么权限只需要在AndroidManifest.xml配置文件中增加相对应权限的配置，<br>   然后在App中就可以随便无限制的使用这些权限来访问用户的设备了。由于这种权限的漏洞，导致了大量的用户信息的泄露。所以在6.0版本上，Android官方团队重新修改了这个权限的申请方式。<br>   在新的权限模式之下，用户将能够根据自己的实际需要在运行时中对各项权限进行审核，且随时关闭其中的部分权限。</p>
-<p>   在M版本中，android权限被分为了3大类，默认权限、签名权限和危险权限，其中默认权限和签名权限都为安装时权限，<br>   即只要在AndroidManifest.xml中配置，就可以在app运行时放心大胆的使用。但是对于危险权限，不仅要再AndroidManifest.xml中配置，<br>   还要在代码中动态去申请，因为这些权限不是默认就授予的，而是运行时去向用户申请的。</p>
-<h2 id="危险权限"><a href="#危险权限" class="headerlink" title="危险权限"></a>危险权限</h2><p>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">group:android.permission-group.CONTACTS</div><div class="line">    permission:android.permission.WRITE_CONTACTS</div><div class="line">    permission:android.permission.GET_ACCOUNTS</div><div class="line">    permission:android.permission.READ_CONTACTS</div><div class="line">group:android.permission-group.PHONE</div><div class="line">    permission:android.permission.READ_CALL_LOG</div><div class="line">    permission:android.permission.READ_PHONE_STATE</div><div class="line">    permission:android.permission.CALL_PHONE</div><div class="line">    permission:android.permission.WRITE_CALL_LOG</div><div class="line">    permission:android.permission.USE_SIP</div><div class="line">    permission:android.permission.PROCESS_OUTGOING_CALLS</div><div class="line">    permission:com.android.voicemail.permission.ADD_VOICEMAIL</div><div class="line">group:android.permission-group.CALENDAR</div><div class="line">    permission:android.permission.READ_CALENDAR</div><div class="line">    permission:android.permission.WRITE_CALENDAR</div><div class="line">group:android.permission-group.CAMERA</div><div class="line">    permission:android.permission.CAMERA</div><div class="line">group:android.permission-group.SENSORS</div><div class="line">    permission:android.permission.BODY_SENSORS</div><div class="line">group:android.permission-group.LOCATION</div><div class="line">    permission:android.permission.ACCESS_FINE_LOCATION</div><div class="line">    permission:android.permission.ACCESS_COARSE_LOCATION</div><div class="line">group:android.permission-group.STORAGE</div><div class="line">    permission:android.permission.READ_EXTERNAL_STORAGE</div><div class="line">    permission:android.permission.WRITE_EXTERNAL_STORAGE</div><div class="line">group:android.permission-group.MICROPHONE</div><div class="line">    permission:android.permission.RECORD_AUDIO</div><div class="line">group:android.permission-group.SMS</div><div class="line">    permission:android.permission.READ_SMS</div><div class="line">    permission:android.permission.RECEIVE_WAP_PUSH</div><div class="line">    permission:android.permission.RECEIVE_MMS</div><div class="line">    permission:android.permission.RECEIVE_SMS</div><div class="line">    permission:android.permission.SEND_SMS</div><div class="line">    permission:android.permission.READ_CELL_BROADCASTS</div><div class="line">​</div></pre></td></tr></table></figure></p>
-<h2 id="使用RxPermissions"><a href="#使用RxPermissions" class="headerlink" title="使用RxPermissions"></a>使用RxPermissions</h2><h3 id="Set-up"><a href="#Set-up" class="headerlink" title="Set up"></a>Set up</h3><p>To use this library your minSdkVersion must be &gt;= 11.</p>
-<p>In your build.gradle :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">repositories &#123;</div><div class="line">    jcenter() // If not already there</div><div class="line">&#125;</div><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    compile &apos;com.tbruyelle.rxpermissions:rxpermissions:0.9.4@aar&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h3 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h3><p>Create a RxPermissions instance :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">RxPermissions rxPermissions = new RxPermissions(this); // where this is an Activity instance</div></pre></td></tr></table></figure></p>
-<p>Example : request the CAMERA permission (with Retrolambda for brevity, but not required)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">// Must be done during an initialization phase like onCreate</div><div class="line">rxPermissions</div><div class="line">    .request(Manifest.permission.CAMERA)</div><div class="line">    .subscribe(granted -&gt; &#123;</div><div class="line">        if (granted) &#123; // Always true pre-M</div><div class="line">           // I can control the camera now</div><div class="line">        &#125; else &#123;</div><div class="line">           // Oups permission denied</div><div class="line">        &#125;</div><div class="line">    &#125;);</div></pre></td></tr></table></figure></p>
-<p>If you need to trigger the permission request from a specific event, you need to setup your event as an observable inside an initialization phase.</p>
-<p>You can use JakeWharton/RxBinding to turn your view to an observable (not included in the library).</p>
-<p>Example :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">// Must be done during an initialization phase like onCreate</div><div class="line">RxView.clicks(findViewById(R.id.enableCamera))</div><div class="line">    .compose(rxPermissions.ensure(Manifest.permission.CAMERA))</div><div class="line">    .subscribe(granted -&gt; &#123;</div><div class="line">        // R.id.enableCamera has been clicked</div><div class="line">    &#125;);</div><div class="line">If multiple permissions at the same time, the result is combined :</div><div class="line"></div><div class="line">rxPermissions</div><div class="line">    .request(Manifest.permission.CAMERA,</div><div class="line">             Manifest.permission.READ_PHONE_STATE)</div><div class="line">    .subscribe(granted -&gt; &#123;</div><div class="line">        if (granted) &#123;</div><div class="line">           // All requested permissions are granted</div><div class="line">        &#125; else &#123;</div><div class="line">           // At least one permission is denied</div><div class="line">        &#125;</div><div class="line">    &#125;);</div></pre></td></tr></table></figure></p>
-<p>You can also observe a detailed result with requestEach or ensureEach :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">rxPermissions</div><div class="line">    .requestEach(Manifest.permission.CAMERA,</div><div class="line">             Manifest.permission.READ_PHONE_STATE)</div><div class="line">    .subscribe(permission -&gt; &#123; // will emit 2 Permission objects</div><div class="line">        if (permission.granted) &#123;</div><div class="line">           // `permission.name` is granted !</div><div class="line">        &#125; else if (permission.shouldShowRequestPermissionRationale)</div><div class="line">           // Denied permission without ask never again</div><div class="line">        &#125; else &#123;</div><div class="line">           // Denied permission with ask never again</div><div class="line">           // Need to go to the settings</div><div class="line">        &#125;</div><div class="line">    &#125;);</div></pre></td></tr></table></figure></p>
 
           
         
@@ -747,6 +602,161 @@
 <li>代码实现；</li>
 <li>生成jar包，部署插件；<br>步骤很简单，主要的是代码实现上比较麻烦，现在可以动脑去编写一些“偷懒”的插件吧。</li>
 </ol>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/07/2017_07_05_1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lishaowei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headicon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lishaowei">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/07/2017_07_05_1/" itemprop="url">Android 动态权限适配方案</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-07T19:48:33+08:00">
+                2017-07-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/07/07/2017_07_05_1/" class="leancloud_visitors" data-flag-title="Android 动态权限适配方案">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>   Google官方在6.0版本上对于应用权限的调用作出了大大的修改。在6.0版本之前，应用App需要用到什么权限只需要在AndroidManifest.xml配置文件中增加相对应权限的配置，<br>   然后在App中就可以随便无限制的使用这些权限来访问用户的设备了。由于这种权限的漏洞，导致了大量的用户信息的泄露。所以在6.0版本上，Android官方团队重新修改了这个权限的申请方式。<br>   在新的权限模式之下，用户将能够根据自己的实际需要在运行时中对各项权限进行审核，且随时关闭其中的部分权限。</p>
+<p>   在M版本中，android权限被分为了3大类，默认权限、签名权限和危险权限，其中默认权限和签名权限都为安装时权限，<br>   即只要在AndroidManifest.xml中配置，就可以在app运行时放心大胆的使用。但是对于危险权限，不仅要再AndroidManifest.xml中配置，<br>   还要在代码中动态去申请，因为这些权限不是默认就授予的，而是运行时去向用户申请的。</p>
+<h2 id="危险权限"><a href="#危险权限" class="headerlink" title="危险权限"></a>危险权限</h2><p>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">group:android.permission-group.CONTACTS</div><div class="line">    permission:android.permission.WRITE_CONTACTS</div><div class="line">    permission:android.permission.GET_ACCOUNTS</div><div class="line">    permission:android.permission.READ_CONTACTS</div><div class="line">group:android.permission-group.PHONE</div><div class="line">    permission:android.permission.READ_CALL_LOG</div><div class="line">    permission:android.permission.READ_PHONE_STATE</div><div class="line">    permission:android.permission.CALL_PHONE</div><div class="line">    permission:android.permission.WRITE_CALL_LOG</div><div class="line">    permission:android.permission.USE_SIP</div><div class="line">    permission:android.permission.PROCESS_OUTGOING_CALLS</div><div class="line">    permission:com.android.voicemail.permission.ADD_VOICEMAIL</div><div class="line">group:android.permission-group.CALENDAR</div><div class="line">    permission:android.permission.READ_CALENDAR</div><div class="line">    permission:android.permission.WRITE_CALENDAR</div><div class="line">group:android.permission-group.CAMERA</div><div class="line">    permission:android.permission.CAMERA</div><div class="line">group:android.permission-group.SENSORS</div><div class="line">    permission:android.permission.BODY_SENSORS</div><div class="line">group:android.permission-group.LOCATION</div><div class="line">    permission:android.permission.ACCESS_FINE_LOCATION</div><div class="line">    permission:android.permission.ACCESS_COARSE_LOCATION</div><div class="line">group:android.permission-group.STORAGE</div><div class="line">    permission:android.permission.READ_EXTERNAL_STORAGE</div><div class="line">    permission:android.permission.WRITE_EXTERNAL_STORAGE</div><div class="line">group:android.permission-group.MICROPHONE</div><div class="line">    permission:android.permission.RECORD_AUDIO</div><div class="line">group:android.permission-group.SMS</div><div class="line">    permission:android.permission.READ_SMS</div><div class="line">    permission:android.permission.RECEIVE_WAP_PUSH</div><div class="line">    permission:android.permission.RECEIVE_MMS</div><div class="line">    permission:android.permission.RECEIVE_SMS</div><div class="line">    permission:android.permission.SEND_SMS</div><div class="line">    permission:android.permission.READ_CELL_BROADCASTS</div><div class="line">​</div></pre></td></tr></table></figure></p>
+<h2 id="使用RxPermissions"><a href="#使用RxPermissions" class="headerlink" title="使用RxPermissions"></a>使用RxPermissions</h2><h3 id="Set-up"><a href="#Set-up" class="headerlink" title="Set up"></a>Set up</h3><p>To use this library your minSdkVersion must be &gt;= 11.</p>
+<p>In your build.gradle :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">repositories &#123;</div><div class="line">    jcenter() // If not already there</div><div class="line">&#125;</div><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    compile &apos;com.tbruyelle.rxpermissions:rxpermissions:0.9.4@aar&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h3><p>Create a RxPermissions instance :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">RxPermissions rxPermissions = new RxPermissions(this); // where this is an Activity instance</div></pre></td></tr></table></figure></p>
+<p>Example : request the CAMERA permission (with Retrolambda for brevity, but not required)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">// Must be done during an initialization phase like onCreate</div><div class="line">rxPermissions</div><div class="line">    .request(Manifest.permission.CAMERA)</div><div class="line">    .subscribe(granted -&gt; &#123;</div><div class="line">        if (granted) &#123; // Always true pre-M</div><div class="line">           // I can control the camera now</div><div class="line">        &#125; else &#123;</div><div class="line">           // Oups permission denied</div><div class="line">        &#125;</div><div class="line">    &#125;);</div></pre></td></tr></table></figure></p>
+<p>If you need to trigger the permission request from a specific event, you need to setup your event as an observable inside an initialization phase.</p>
+<p>You can use JakeWharton/RxBinding to turn your view to an observable (not included in the library).</p>
+<p>Example :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">// Must be done during an initialization phase like onCreate</div><div class="line">RxView.clicks(findViewById(R.id.enableCamera))</div><div class="line">    .compose(rxPermissions.ensure(Manifest.permission.CAMERA))</div><div class="line">    .subscribe(granted -&gt; &#123;</div><div class="line">        // R.id.enableCamera has been clicked</div><div class="line">    &#125;);</div><div class="line">If multiple permissions at the same time, the result is combined :</div><div class="line"></div><div class="line">rxPermissions</div><div class="line">    .request(Manifest.permission.CAMERA,</div><div class="line">             Manifest.permission.READ_PHONE_STATE)</div><div class="line">    .subscribe(granted -&gt; &#123;</div><div class="line">        if (granted) &#123;</div><div class="line">           // All requested permissions are granted</div><div class="line">        &#125; else &#123;</div><div class="line">           // At least one permission is denied</div><div class="line">        &#125;</div><div class="line">    &#125;);</div></pre></td></tr></table></figure></p>
+<p>You can also observe a detailed result with requestEach or ensureEach :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">rxPermissions</div><div class="line">    .requestEach(Manifest.permission.CAMERA,</div><div class="line">             Manifest.permission.READ_PHONE_STATE)</div><div class="line">    .subscribe(permission -&gt; &#123; // will emit 2 Permission objects</div><div class="line">        if (permission.granted) &#123;</div><div class="line">           // `permission.name` is granted !</div><div class="line">        &#125; else if (permission.shouldShowRequestPermissionRationale)</div><div class="line">           // Denied permission without ask never again</div><div class="line">        &#125; else &#123;</div><div class="line">           // Denied permission with ask never again</div><div class="line">           // Need to go to the settings</div><div class="line">        &#125;</div><div class="line">    &#125;);</div></pre></td></tr></table></figure></p>
 
           
         
