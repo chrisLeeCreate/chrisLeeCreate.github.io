@@ -1,0 +1,939 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="git flow今天做新需求，使用git-flow开个新功能分支。可不料，SourceTree闹不开心。一直报错 如下：1Fatal: Not a gitflow-enabled repo yet. Please run &amp;apos;git flow init&amp;apos; first. 我的小乖乖， 你怎么出问题了呢。那我就去解决一下。 google了一下，原来是我git glow没有初始化。 然">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git-Flow 使用总结">
+<meta property="og:url" content="http://yoursite.com/2016/07/10/2016_07_10_1/index.html">
+<meta property="og:site_name" content="lishaowei">
+<meta property="og:description" content="git flow今天做新需求，使用git-flow开个新功能分支。可不料，SourceTree闹不开心。一直报错 如下：1Fatal: Not a gitflow-enabled repo yet. Please run &amp;apos;git flow init&amp;apos; first. 我的小乖乖， 你怎么出问题了呢。那我就去解决一下。 google了一下，原来是我git glow没有初始化。 然">
+<meta property="og:image" content="http://yoursite.com/images/mvp_helper/o_git-flow-nvie.png">
+<meta property="og:updated_time" content="2017-07-11T02:33:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Git-Flow 使用总结">
+<meta name="twitter:description" content="git flow今天做新需求，使用git-flow开个新功能分支。可不料，SourceTree闹不开心。一直报错 如下：1Fatal: Not a gitflow-enabled repo yet. Please run &amp;apos;git flow init&amp;apos; first. 我的小乖乖， 你怎么出问题了呢。那我就去解决一下。 google了一下，原来是我git glow没有初始化。 然">
+<meta name="twitter:image" content="http://yoursite.com/images/mvp_helper/o_git-flow-nvie.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/07/10/2016_07_10_1/"/>
+
+
+
+
+
+  <title>Git-Flow 使用总结 | lishaowei</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">lishaowei</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/07/10/2016_07_10_1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lishaowei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headicon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lishaowei">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Git-Flow 使用总结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-10T15:30:00+08:00">
+                2016-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2016/07/10/2016_07_10_1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2016/07/10/2016_07_10_1/" class="leancloud_visitors" data-flag-title="Git-Flow 使用总结">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="git-flow"><a href="#git-flow" class="headerlink" title="git flow"></a>git flow</h2><p>今天做新需求，使用git-flow开个新功能分支。可不料，SourceTree闹不开心。一直报错 如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Fatal: Not a gitflow-enabled repo yet. Please run &apos;git flow init&apos; first.</div></pre></td></tr></table></figure></p>
+<p>我的小乖乖， 你怎么出问题了呢。那我就去解决一下。</p>
+<p>google了一下，原来是我git glow没有初始化。</p>
+<p>然后我就去teminal中 去执行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git flow init</div></pre></td></tr></table></figure>
+<p>结果报错<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git: &apos;flow&apos; is not a git command. See &apos;git --help&apos;</div></pre></td></tr></table></figure></p>
+<p>好了，原来是我新电脑没有装git flow</p>
+<h2 id="如何配置"><a href="#如何配置" class="headerlink" title="如何配置"></a>如何配置</h2><p>使用brew下载<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install git-flow</div></pre></td></tr></table></figure></p>
+<p>下载好之后 初始化<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git flow init -f</div></pre></td></tr></table></figure></p>
+<p>然后就会让你搭建git分支架构，按照默认即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">Which branch should be used for bringing forth production releases?</div><div class="line">   - develop</div><div class="line">   - master</div><div class="line">   - release/9.2.3</div><div class="line">   - remote</div><div class="line">Branch name for production releases: [master]  </div><div class="line"></div><div class="line">Which branch should be used for integration of the &quot;next release&quot;?</div><div class="line">   - develop</div><div class="line">   - release/9.2.3</div><div class="line">   - remote</div><div class="line">Branch name for &quot;next release&quot; development: [develop] </div><div class="line"></div><div class="line">How to name your supporting branch prefixes?</div><div class="line">Feature branches? [feature/] </div><div class="line">Release branches? [release/] </div><div class="line">Hotfix branches? [hotfix/] </div><div class="line">Support branches? [support/] </div><div class="line">Version tag prefix? []</div></pre></td></tr></table></figure></p>
+<h2 id="git-flow流程图"><a href="#git-flow流程图" class="headerlink" title="git flow流程图"></a>git flow流程图</h2><p><img src="/images/mvp_helper/o_git-flow-nvie.png" width="800"></p>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><h3 id="新功能开发"><a href="#新功能开发" class="headerlink" title="新功能开发"></a>新功能开发</h3><h4 id="基于develop，开启新功能分支开发"><a href="#基于develop，开启新功能分支开发" class="headerlink" title="基于develop，开启新功能分支开发"></a>基于develop，开启新功能分支开发</h4><p>完成前面构建操作，当前所在分支就变成 develop. 任何开发都必须从 develop 开始：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git flow feature start feature-name</div></pre></td></tr></table></figure></p>
+<p>git-flow 从 develop 分支创建了一个新的分支 feature/feature-name，并自动切换到这个分支下面。然后就可以进行 feature-name 功能开发，中间可以多次的 commit 操作。</p>
+<p>将一个 f1 分支推到远程服务器，与其他开发人员协同开发：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">➜ git flow feature publish f1</div><div class="line"></div><div class="line">或者</div><div class="line"></div><div class="line">➜ git push origin feature/f1</div></pre></td></tr></table></figure></p>
+<h4 id="基于develop，开启新功能分支开发-1"><a href="#基于develop，开启新功能分支开发-1" class="headerlink" title="基于develop，开启新功能分支开发"></a>基于develop，开启新功能分支开发</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">➜ ➜ git flow feature finish f1</div></pre></td></tr></table></figure>
+<p>feature/f1 分支的代码会被合并到 develop 里面，然后删除该分支，切换回 develop. 到此，新功能开发这个场景完毕。在 f1 功能开发中，如果 f1 未完成，同时功能 f2 要开始进行，也是可以的。</p>
+<h3 id="发布上线"><a href="#发布上线" class="headerlink" title="发布上线"></a>发布上线</h3><h4 id="基于develop，开发发布分支"><a href="#基于develop，开发发布分支" class="headerlink" title="基于develop，开发发布分支"></a>基于develop，开发发布分支</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"> git flow release start 0.1</div><div class="line">Switched to a new branch &apos;release/0.1&apos;</div><div class="line"></div><div class="line">Summary of actions:</div><div class="line">- A new branch &apos;release/0.1&apos; was created, based on &apos;develop&apos;</div><div class="line">- You are now on branch &apos;release/0.1&apos;</div><div class="line"></div><div class="line">Follow-up actions:</div><div class="line">- Bump the version number now!</div><div class="line">- Start committing last-minute fixes in preparing your release</div><div class="line">- When done, run:</div><div class="line"></div><div class="line">git flow release finish &apos;0.1&apos;</div></pre></td></tr></table></figure>
+<h4 id="git-flow-从-develop-分支创建一个新的分支-release-0-1，并切换到该分支下，接下来要做的就是修改版本号等发布操作。完成后："><a href="#git-flow-从-develop-分支创建一个新的分支-release-0-1，并切换到该分支下，接下来要做的就是修改版本号等发布操作。完成后：" class="headerlink" title="git-flow 从 develop 分支创建一个新的分支 release/0.1，并切换到该分支下，接下来要做的就是修改版本号等发布操作。完成后："></a>git-flow 从 develop 分支创建一个新的分支 release/0.1，并切换到该分支下，接下来要做的就是修改版本号等发布操作。完成后：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"> git flow release finish 0.1</div><div class="line">Switched to branch &apos;master&apos;</div><div class="line">Merge made by the &apos;recursive&apos; strategy.</div><div class="line">f1      |    1 +</div><div class="line">version |    1 +</div><div class="line">2 files changed, 2 insertions(+)</div><div class="line">create mode 100644 f1</div><div class="line">create mode 100644 version</div><div class="line">Switched to branch &apos;develop&apos;</div><div class="line">Merge made by the &apos;recursive&apos; strategy.</div><div class="line">version |    1 +</div><div class="line">1 file changed, 1 insertion(+)</div><div class="line">create mode 100644 version</div><div class="line">Deleted branch release/0.1 (was d77df80).</div><div class="line"></div><div class="line">Summary of actions:</div><div class="line">- Latest objects have been fetched from &apos;origin&apos;</div><div class="line">- Release branch has been merged into &apos;master&apos;</div><div class="line">- The release was tagged &apos;0.1&apos;</div><div class="line">- Release branch has been back-merged into &apos;develop&apos;</div><div class="line">- Release branch &apos;release/0.1&apos; has been deleted</div></pre></td></tr></table></figure>
+<h4 id="打标签"><a href="#打标签" class="headerlink" title="打标签"></a>打标签</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"> git:(master) git tag</div><div class="line">0.1</div><div class="line">0.2</div></pre></td></tr></table></figure>
+<h3 id="线上出bug了-holy-s-t"><a href="#线上出bug了-holy-s-t" class="headerlink" title="线上出bug了 holy s**t"></a>线上出bug了 holy s**t</h3><h4 id="基于master，开启热修复分支"><a href="#基于master，开启热修复分支" class="headerlink" title="基于master，开启热修复分支"></a>基于master，开启热修复分支</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"> git flow hotfix start bug1</div><div class="line">Switched to a new branch &apos;hotfix/bug1&apos;</div><div class="line"></div><div class="line">Summary of actions:</div><div class="line">- A new branch &apos;hotfix/bug1&apos; was created, based on &apos;master&apos;</div><div class="line">- You are now on branch &apos;hotfix/bug1&apos;</div><div class="line"></div><div class="line">Follow-up actions:</div><div class="line">- Bump the version number now!</div><div class="line">- Start committing your hot fixes</div><div class="line">- When done, run:</div><div class="line"></div><div class="line">git flow hotfix finish &apos;bug1&apos;</div></pre></td></tr></table></figure>
+<h4 id="git-flow-从-master-分支创建一个新的分支-hotfix-bug1，并切换到该分支下。接下来要做的就是修复-bug，完成后："><a href="#git-flow-从-master-分支创建一个新的分支-hotfix-bug1，并切换到该分支下。接下来要做的就是修复-bug，完成后：" class="headerlink" title="git-flow 从 master 分支创建一个新的分支 hotfix/bug1，并切换到该分支下。接下来要做的就是修复 bug，完成后："></a>git-flow 从 master 分支创建一个新的分支 hotfix/bug1，并切换到该分支下。接下来要做的就是修复 bug，完成后：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">➜ git flow hotfix finish bug1</div><div class="line">   Switched to branch &apos;master&apos;</div><div class="line">   Merge made by the &apos;recursive&apos; strategy.</div><div class="line">   f1 |    2 +-</div><div class="line">   1 file changed, 1 insertion(+), 1 deletion(-)</div><div class="line">   Switched to branch &apos;develop&apos;</div><div class="line">   Merge made by the &apos;recursive&apos; strategy.</div><div class="line">   f1 |    2 +-</div><div class="line">   1 file changed, 1 insertion(+), 1 deletion(-)</div><div class="line">   Deleted branch hotfix/bug1 (was aa3ca2e).</div><div class="line">   </div><div class="line">   Summary of actions:</div><div class="line">   - Latest objects have been fetched from &apos;origin&apos;</div><div class="line">   - Hotfix branch has been merged into &apos;master&apos;</div><div class="line">   - The hotfix was tagged &apos;bug1&apos;</div><div class="line">   - Hotfix branch has been back-merged into &apos;develop&apos;</div><div class="line">   - Hotfix branch &apos;hotfix/bug1&apos; has been deleted</div></pre></td></tr></table></figure>
+<p>git-flow 会依次切换到 master develop 分支下合并 hotfix/bug1，然后删掉 hotfix/bug1。到此，hotfix 完成。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat.jpeg" alt="lishaowei WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/alipay.jpeg" alt="lishaowei Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/25/2016_06_26_4/" rel="next" title="GreenDao 3.0使用">
+                <i class="fa fa-chevron-left"></i> GreenDao 3.0使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/05/2017_07_05_2/" rel="prev" title="用InteliJ IDEA 写一个适用于生成的mvp插件">
+                用InteliJ IDEA 写一个适用于生成的mvp插件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/headicon.jpg"
+               alt="lishaowei" />
+          <p class="site-author-name" itemprop="name">lishaowei</p>
+           
+              <p class="site-description motion-element" itemprop="description">Now or Never</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/chrisLeeCreate" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/u/2434263314" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.lieeber.com/" title="K神" target="_blank">K神</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#git-flow"><span class="nav-number">1.</span> <span class="nav-text">git flow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何配置"><span class="nav-number">2.</span> <span class="nav-text">如何配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-flow流程图"><span class="nav-number">3.</span> <span class="nav-text">git flow流程图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用场景"><span class="nav-number">4.</span> <span class="nav-text">使用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#新功能开发"><span class="nav-number">4.1.</span> <span class="nav-text">新功能开发</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于develop，开启新功能分支开发"><span class="nav-number">4.1.1.</span> <span class="nav-text">基于develop，开启新功能分支开发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于develop，开启新功能分支开发-1"><span class="nav-number">4.1.2.</span> <span class="nav-text">基于develop，开启新功能分支开发</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发布上线"><span class="nav-number">4.2.</span> <span class="nav-text">发布上线</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于develop，开发发布分支"><span class="nav-number">4.2.1.</span> <span class="nav-text">基于develop，开发发布分支</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#git-flow-从-develop-分支创建一个新的分支-release-0-1，并切换到该分支下，接下来要做的就是修改版本号等发布操作。完成后："><span class="nav-number">4.2.2.</span> <span class="nav-text">git-flow 从 develop 分支创建一个新的分支 release/0.1，并切换到该分支下，接下来要做的就是修改版本号等发布操作。完成后：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#打标签"><span class="nav-number">4.2.3.</span> <span class="nav-text">打标签</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线上出bug了-holy-s-t"><span class="nav-number">4.3.</span> <span class="nav-text">线上出bug了 holy s**t</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于master，开启热修复分支"><span class="nav-number">4.3.1.</span> <span class="nav-text">基于master，开启热修复分支</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#git-flow-从-master-分支创建一个新的分支-hotfix-bug1，并切换到该分支下。接下来要做的就是修复-bug，完成后："><span class="nav-number">4.3.2.</span> <span class="nav-text">git-flow 从 master 分支创建一个新的分支 hotfix/bug1，并切换到该分支下。接下来要做的就是修复 bug，完成后：</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lishaowei</span>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "05176ca3ed704b9c8ac21f2d42ae520a",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("vNTj3JoEA3t83f9ruYAnrVV5-gzGzoHsz", "MtcjjSwYWHe5cW4y2DDGWi3o");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

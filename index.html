@@ -276,7 +276,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/08/2017_07_07_4/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/05/2017_07_05_1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="lishaowei">
@@ -295,7 +295,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/07/08/2017_07_07_4/" itemprop="url">GreenDao 3.0使用</a></h1>
+                <a class="post-title-link" href="/2017/07/05/2017_07_05_1/" itemprop="url">Android 动态权限适配方案</a></h1>
         
 
         <div class="post-meta">
@@ -307,8 +307,491 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-08T00:08:33+08:00">
-                2017-07-08
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-05T10:31:00+08:00">
+                2017-07-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/07/05/2017_07_05_1/" class="leancloud_visitors" data-flag-title="Android 动态权限适配方案">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>   Google官方在6.0版本上对于应用权限的调用作出了大大的修改。在6.0版本之前，应用App需要用到什么权限只需要在AndroidManifest.xml配置文件中增加相对应权限的配置，<br>   然后在App中就可以随便无限制的使用这些权限来访问用户的设备了。由于这种权限的漏洞，导致了大量的用户信息的泄露。所以在6.0版本上，Android官方团队重新修改了这个权限的申请方式。<br>   在新的权限模式之下，用户将能够根据自己的实际需要在运行时中对各项权限进行审核，且随时关闭其中的部分权限。</p>
+<p>   在M版本中，android权限被分为了3大类，默认权限、签名权限和危险权限，其中默认权限和签名权限都为安装时权限，<br>   即只要在AndroidManifest.xml中配置，就可以在app运行时放心大胆的使用。但是对于危险权限，不仅要再AndroidManifest.xml中配置，<br>   还要在代码中动态去申请，因为这些权限不是默认就授予的，而是运行时去向用户申请的。</p>
+<h2 id="危险权限"><a href="#危险权限" class="headerlink" title="危险权限"></a>危险权限</h2><p>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">group:android.permission-group.CONTACTS</div><div class="line">    permission:android.permission.WRITE_CONTACTS</div><div class="line">    permission:android.permission.GET_ACCOUNTS</div><div class="line">    permission:android.permission.READ_CONTACTS</div><div class="line">group:android.permission-group.PHONE</div><div class="line">    permission:android.permission.READ_CALL_LOG</div><div class="line">    permission:android.permission.READ_PHONE_STATE</div><div class="line">    permission:android.permission.CALL_PHONE</div><div class="line">    permission:android.permission.WRITE_CALL_LOG</div><div class="line">    permission:android.permission.USE_SIP</div><div class="line">    permission:android.permission.PROCESS_OUTGOING_CALLS</div><div class="line">    permission:com.android.voicemail.permission.ADD_VOICEMAIL</div><div class="line">group:android.permission-group.CALENDAR</div><div class="line">    permission:android.permission.READ_CALENDAR</div><div class="line">    permission:android.permission.WRITE_CALENDAR</div><div class="line">group:android.permission-group.CAMERA</div><div class="line">    permission:android.permission.CAMERA</div><div class="line">group:android.permission-group.SENSORS</div><div class="line">    permission:android.permission.BODY_SENSORS</div><div class="line">group:android.permission-group.LOCATION</div><div class="line">    permission:android.permission.ACCESS_FINE_LOCATION</div><div class="line">    permission:android.permission.ACCESS_COARSE_LOCATION</div><div class="line">group:android.permission-group.STORAGE</div><div class="line">    permission:android.permission.READ_EXTERNAL_STORAGE</div><div class="line">    permission:android.permission.WRITE_EXTERNAL_STORAGE</div><div class="line">group:android.permission-group.MICROPHONE</div><div class="line">    permission:android.permission.RECORD_AUDIO</div><div class="line">group:android.permission-group.SMS</div><div class="line">    permission:android.permission.READ_SMS</div><div class="line">    permission:android.permission.RECEIVE_WAP_PUSH</div><div class="line">    permission:android.permission.RECEIVE_MMS</div><div class="line">    permission:android.permission.RECEIVE_SMS</div><div class="line">    permission:android.permission.SEND_SMS</div><div class="line">    permission:android.permission.READ_CELL_BROADCASTS</div><div class="line">​</div></pre></td></tr></table></figure></p>
+<h2 id="使用RxPermissions"><a href="#使用RxPermissions" class="headerlink" title="使用RxPermissions"></a>使用RxPermissions</h2><h3 id="Set-up"><a href="#Set-up" class="headerlink" title="Set up"></a>Set up</h3><p>To use this library your minSdkVersion must be &gt;= 11.</p>
+<p>In your build.gradle :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">repositories &#123;</div><div class="line">    jcenter() // If not already there</div><div class="line">&#125;</div><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    compile &apos;com.tbruyelle.rxpermissions:rxpermissions:0.9.4@aar&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h3><p>Create a RxPermissions instance :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">RxPermissions rxPermissions = new RxPermissions(this); // where this is an Activity instance</div></pre></td></tr></table></figure></p>
+<p>Example : request the CAMERA permission (with Retrolambda for brevity, but not required)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">// Must be done during an initialization phase like onCreate</div><div class="line">rxPermissions</div><div class="line">    .request(Manifest.permission.CAMERA)</div><div class="line">    .subscribe(granted -&gt; &#123;</div><div class="line">        if (granted) &#123; // Always true pre-M</div><div class="line">           // I can control the camera now</div><div class="line">        &#125; else &#123;</div><div class="line">           // Oups permission denied</div><div class="line">        &#125;</div><div class="line">    &#125;);</div></pre></td></tr></table></figure></p>
+<p>If you need to trigger the permission request from a specific event, you need to setup your event as an observable inside an initialization phase.</p>
+<p>You can use JakeWharton/RxBinding to turn your view to an observable (not included in the library).</p>
+<p>Example :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">// Must be done during an initialization phase like onCreate</div><div class="line">RxView.clicks(findViewById(R.id.enableCamera))</div><div class="line">    .compose(rxPermissions.ensure(Manifest.permission.CAMERA))</div><div class="line">    .subscribe(granted -&gt; &#123;</div><div class="line">        // R.id.enableCamera has been clicked</div><div class="line">    &#125;);</div><div class="line">If multiple permissions at the same time, the result is combined :</div><div class="line"></div><div class="line">rxPermissions</div><div class="line">    .request(Manifest.permission.CAMERA,</div><div class="line">             Manifest.permission.READ_PHONE_STATE)</div><div class="line">    .subscribe(granted -&gt; &#123;</div><div class="line">        if (granted) &#123;</div><div class="line">           // All requested permissions are granted</div><div class="line">        &#125; else &#123;</div><div class="line">           // At least one permission is denied</div><div class="line">        &#125;</div><div class="line">    &#125;);</div></pre></td></tr></table></figure></p>
+<p>You can also observe a detailed result with requestEach or ensureEach :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">rxPermissions</div><div class="line">    .requestEach(Manifest.permission.CAMERA,</div><div class="line">             Manifest.permission.READ_PHONE_STATE)</div><div class="line">    .subscribe(permission -&gt; &#123; // will emit 2 Permission objects</div><div class="line">        if (permission.granted) &#123;</div><div class="line">           // `permission.name` is granted !</div><div class="line">        &#125; else if (permission.shouldShowRequestPermissionRationale)</div><div class="line">           // Denied permission without ask never again</div><div class="line">        &#125; else &#123;</div><div class="line">           // Denied permission with ask never again</div><div class="line">           // Need to go to the settings</div><div class="line">        &#125;</div><div class="line">    &#125;);</div></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/05/2017_07_05_2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lishaowei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headicon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lishaowei">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/05/2017_07_05_2/" itemprop="url">用InteliJ IDEA 写一个适用于生成的mvp插件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-05T09:30:00+08:00">
+                2017-07-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Idea插件/" itemprop="url" rel="index">
+                    <span itemprop="name">Idea插件</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/07/05/2017_07_05_2/" class="leancloud_visitors" data-flag-title="用InteliJ IDEA 写一个适用于生成的mvp插件">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>现在大部分的框架都是 MVP + Dagger ，但是如果你自己去写所有的类的话，也要花费不少功夫<br>说不定dagger还会编译错误</p>
+<p>so ，mvp插件应运而生</p>
+<h2 id="创建一个Plugin项目"><a href="#创建一个Plugin项目" class="headerlink" title="创建一个Plugin项目"></a>创建一个Plugin项目</h2><p>  打开idea ，File-&gt;New-&gt;Project 然后选择一个plugin项目 。选择 intellij platfrom plugin </p>
+<p>  点击Next，输入项目的名称即可，这里取名MvpCreate。</p>
+<p>  项目目录下的 plugin.xml为项目的说明文件，会包含一些项目的版权、作者和声明。其中主要标签为<actions>，这里会是插件的入口。</actions></p>
+<p>  src目录下存放主要的代码。</p>
+<h2 id="创建一个菜单"><a href="#创建一个菜单" class="headerlink" title="创建一个菜单"></a>创建一个菜单</h2><p>  现在我们开始建一个自己的菜单，选择src-&gt;New-&gt;Action，<br>  <img src="/images/mvp_helper/11.png" width="900"><br>  然后填写这个Action的信息： 注意⚠️：这里我用的是command+n 在generate保存<br>  <img src="/images/mvp_helper/12.png" width="900"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">说明一下需要填写的属性：</div><div class="line"></div><div class="line">Action ID：代表这个Action的唯一标示。</div><div class="line"></div><div class="line">Class Name：类名</div><div class="line"></div><div class="line">Name：这个插件在菜单上的名称</div><div class="line"></div><div class="line">Description：关于这个插件的描述信息</div><div class="line"></div><div class="line">Groups：代表这个插件会出现的位置。比如想让这个插件出现在Code菜单下的第一次选项，我在图中选择CodeMenu（Code），右边Anchor选择First</div><div class="line"></div><div class="line">Keyboard Shortcuts：快捷键设置。图中设置Command+n</div></pre></td></tr></table></figure></p>
+<p>同时看一下plugin.xml这个文件，会发现<actions>标签下多出来了一个<action>标签，里面包含了我们刚刚填写的信息。<br>eas<br>这样一个插件就生成了。把这个插件部署到studio已经可以使用，具体如何部署接下来会讲，继续往下看。</action></actions></p>
+<h2 id="编写插件代码"><a href="#编写插件代码" class="headerlink" title="编写插件代码"></a>编写插件代码</h2><p>先说一下思路：</p>
+<p>生成代码我们可以使用一些模板，这个模板可以是一个txt文件，在模板里面添加代码，提取出需要替换的代码，然后通过流读取模板文件，最后生成类文件。基本上就是这样的思路，接下来具体实现：</p>
+<h3 id="新建模板文件"><a href="#新建模板文件" class="headerlink" title="新建模板文件"></a>新建模板文件</h3><p>我们按照官网的mvp风格来编写整体的框架，这里按功能模块分包，包含Activity、Fragment、Presenter、Contract，然后加上base类，BasePresenter、BaseView、BaseActivity、BaseFragment。看一下：<br><img src="/images/mvp_helper/1.png" width="800"></p>
+<p>看一下TemplateContract.txt这个文件的内部细节：<br><img src="/images/mvp_helper/2.png" width="800"></p>
+<p>代码里面的$packagename、$basepackagename、$author、$description、$date、$name这些字符都是可以动态替换的。这些模板文件的具体代码细节在文末的源码中查看，当然也可以根据自己的需要写入自己的代码。</p>
+<h3 id="新建dialog"><a href="#新建dialog" class="headerlink" title="新建dialog"></a>新建dialog</h3><p>上面的模板已经建好，现在我们需要一个对话框，在对话框里面输入作者和模块的名字。效果看一下：<br><img src="/images/mvp_helper/3.png" width="300"></p>
+<p>很简单的效果图，和创建Action一样，Dialog可以直接在src下右键New-&gt;Dialog取名MyDialog，然后会在src目录下生生成一个MyDialog.java和MyDialog.form的文件，点击这个MyDialog.form文件会进入一个可视化界面，通过拖拽就可以实现一个用户界面：<br><img src="/images/mvp_helper/4.png" width="800"></p>
+<p>然后看一下MyDialog.java这个类的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div></pre></td><td class="code"><pre><div class="line">import javax.swing.*;</div><div class="line">import java.awt.event.*;</div><div class="line"></div><div class="line">public class MyDialog extends JDialog &#123;</div><div class="line">    private JPanel contentPane;</div><div class="line">    private JButton buttonOK;</div><div class="line">    private JButton buttonCancel;</div><div class="line">    private JTextField textField1;</div><div class="line">    private JTextField textField2;</div><div class="line"></div><div class="line">    private DialogCallBack mCallBack;</div><div class="line"></div><div class="line">    public MyDialog(DialogCallBack callBack) &#123;</div><div class="line">        this.mCallBack = callBack;</div><div class="line">        setTitle(&quot;Mvp Create Helper&quot;);</div><div class="line">        setContentPane(contentPane);</div><div class="line">        setModal(true);</div><div class="line">        getRootPane().setDefaultButton(buttonOK);</div><div class="line">        setSize(300, 150);</div><div class="line">        setLocationRelativeTo(null);</div><div class="line">        buttonOK.addActionListener(new ActionListener() &#123;</div><div class="line">            public void actionPerformed(ActionEvent e) &#123;</div><div class="line">                onOK();</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line"></div><div class="line">        buttonCancel.addActionListener(new ActionListener() &#123;</div><div class="line">            public void actionPerformed(ActionEvent e) &#123;</div><div class="line">                onCancel();</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line"></div><div class="line">        // call onCancel() when cross is clicked</div><div class="line">        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);</div><div class="line">        addWindowListener(new WindowAdapter() &#123;</div><div class="line">            public void windowClosing(WindowEvent e) &#123;</div><div class="line">                onCancel();</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line"></div><div class="line">        // call onCancel() on ESCAPE</div><div class="line">        contentPane.registerKeyboardAction(new ActionListener() &#123;</div><div class="line">            public void actionPerformed(ActionEvent e) &#123;</div><div class="line">                onCancel();</div><div class="line">            &#125;</div><div class="line">        &#125;, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private void onOK() &#123;</div><div class="line">        // add your code here</div><div class="line">        if (null != mCallBack)&#123;</div><div class="line">            mCallBack.ok(textField1.getText().trim(), textField2.getText().trim());</div><div class="line">        &#125;</div><div class="line">        dispose();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private void onCancel() &#123;</div><div class="line">        // add your code here if necessary</div><div class="line">        dispose();</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    public interface DialogCallBack&#123;</div><div class="line">        void ok(String author, String moduleName);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="生成代码实现"><a href="#生成代码实现" class="headerlink" title="生成代码实现"></a>生成代码实现</h3><p>好了现在去看看MvpCreateAction这个类的具体实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div><div class="line">255</div><div class="line">256</div><div class="line">257</div><div class="line">258</div><div class="line">259</div><div class="line">260</div><div class="line">261</div><div class="line">262</div><div class="line">263</div><div class="line">264</div><div class="line">265</div><div class="line">266</div><div class="line">267</div><div class="line">268</div><div class="line">269</div><div class="line">270</div><div class="line">271</div><div class="line">272</div><div class="line">273</div><div class="line">274</div><div class="line">275</div><div class="line">276</div><div class="line">277</div><div class="line">278</div><div class="line">279</div><div class="line">280</div><div class="line">281</div><div class="line">282</div><div class="line">283</div><div class="line">284</div></pre></td><td class="code"><pre><div class="line">import com.intellij.openapi.actionSystem.AnAction;</div><div class="line">import com.intellij.openapi.actionSystem.AnActionEvent;</div><div class="line">import com.intellij.openapi.actionSystem.PlatformDataKeys;</div><div class="line">import com.intellij.openapi.project.Project;</div><div class="line">import com.intellij.openapi.ui.Messages;</div><div class="line">import org.w3c.dom.Document;</div><div class="line">import org.w3c.dom.Element;</div><div class="line">import org.w3c.dom.Node;</div><div class="line">import org.w3c.dom.NodeList;</div><div class="line"></div><div class="line">import javax.xml.parsers.DocumentBuilder;</div><div class="line">import javax.xml.parsers.DocumentBuilderFactory;</div><div class="line">import java.io.*;</div><div class="line">import java.text.SimpleDateFormat;</div><div class="line">import java.util.Date;</div><div class="line"></div><div class="line">public class MvpCreateAction extends AnAction &#123;</div><div class="line"></div><div class="line">    private Project project;</div><div class="line">    //包名</div><div class="line">    private String packageName = &quot;&quot;;</div><div class="line">    private String mAuthor;//作者</div><div class="line">    private String mModuleName;//模块名称</div><div class="line"></div><div class="line">    private enum  CodeType &#123;</div><div class="line">        Activity, Fragment, Contract, Presenter, BaseView, BasePresenter, MvpBaseActivity, MvpBaseFragment</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void actionPerformed(AnActionEvent e) &#123;</div><div class="line">        project = e.getData(PlatformDataKeys.PROJECT);</div><div class="line">        packageName = getPackageName();</div><div class="line">        init();</div><div class="line">        refreshProject(e);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 刷新项目</div><div class="line">     * @param e</div><div class="line">     */</div><div class="line">    private void refreshProject(AnActionEvent e) &#123;</div><div class="line">        e.getProject().getBaseDir().refresh(false, true);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 初始化Dialog</div><div class="line">     */</div><div class="line">    private void init()&#123;</div><div class="line">        MyDialog myDialog = new MyDialog(new MyDialog.DialogCallBack() &#123;</div><div class="line">            @Override</div><div class="line">            public void ok(String author, String moduleName) &#123;</div><div class="line">                mAuthor = author;</div><div class="line">                mModuleName = moduleName;</div><div class="line">                createClassFiles();</div><div class="line">                Messages.showInfoMessage(project,&quot;create mvp code success&quot;,&quot;title&quot;);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">        myDialog.setVisible(true);</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 生成类文件</div><div class="line">     */</div><div class="line">    private void createClassFiles() &#123;</div><div class="line">        createClassFile(CodeType.Activity);</div><div class="line">        createClassFile(CodeType.Fragment);</div><div class="line">        createClassFile(CodeType.Contract);</div><div class="line">        createClassFile(CodeType.Presenter);</div><div class="line">        createBaseClassFile(CodeType.BaseView);</div><div class="line">        createBaseClassFile(CodeType.BasePresenter);</div><div class="line">        createBaseClassFile(CodeType.MvpBaseActivity);</div><div class="line">        createBaseClassFile(CodeType.MvpBaseFragment);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 生成base类</div><div class="line">     * @param codeType</div><div class="line">     */</div><div class="line">    private void createBaseClassFile(CodeType codeType) &#123;</div><div class="line">        String fileName = &quot;&quot;;</div><div class="line">        String content = &quot;&quot;;</div><div class="line">        String basePath = getAppPath() + &quot;base/&quot;;</div><div class="line">        switch (codeType)&#123;</div><div class="line">            case BaseView:</div><div class="line">                if (!new File(basePath + &quot;BaseView.java&quot;).exists())&#123;</div><div class="line">                    fileName = &quot;TemplateBaseView.txt&quot;;</div><div class="line">                    content = ReadTemplateFile(fileName);</div><div class="line">                    content = dealTemplateContent(content);</div><div class="line">                    writeToFile(content, basePath, &quot;BaseView.java&quot;);</div><div class="line">                &#125;</div><div class="line">                break;</div><div class="line">            case BasePresenter:</div><div class="line">                if (!new File(basePath + &quot;BasePresenter.java&quot;).exists())&#123;</div><div class="line">                    fileName = &quot;TemplateBasePresenter.txt&quot;;</div><div class="line">                    content = ReadTemplateFile(fileName);</div><div class="line">                    content = dealTemplateContent(content);</div><div class="line">                    writeToFile(content, basePath, &quot;BasePresenter.java&quot;);</div><div class="line">                &#125;</div><div class="line">                break;</div><div class="line">            case MvpBaseActivity:</div><div class="line">                if (!new File(basePath + &quot;MvpBaseActivity.java&quot;).exists())&#123;</div><div class="line">                    fileName = &quot;TemplateMvpBaseActivity.txt&quot;;</div><div class="line">                    content = ReadTemplateFile(fileName);</div><div class="line">                    content = dealTemplateContent(content);</div><div class="line">                    writeToFile(content, basePath, &quot;MvpBaseActivity.java&quot;);</div><div class="line">                &#125;</div><div class="line">                break;</div><div class="line">            case MvpBaseFragment:</div><div class="line">                if (!new File(basePath + &quot;MvpBaseFragment.java&quot;).exists())&#123;</div><div class="line">                    fileName = &quot;TemplateMvpBaseFragment.txt&quot;;</div><div class="line">                    content = ReadTemplateFile(fileName);</div><div class="line">                    content = dealTemplateContent(content);</div><div class="line">                    writeToFile(content, basePath, &quot;MvpBaseFragment.java&quot;);</div><div class="line">                &#125;</div><div class="line">                break;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 生成mvp框架代码</div><div class="line">     * @param codeType</div><div class="line">     */</div><div class="line">    private void createClassFile(CodeType codeType) &#123;</div><div class="line">        String fileName = &quot;&quot;;</div><div class="line">        String content = &quot;&quot;;</div><div class="line">        String appPath = getAppPath();</div><div class="line">        switch (codeType)&#123;</div><div class="line">            case Activity:</div><div class="line">                fileName = &quot;TemplateActivity.txt&quot;;</div><div class="line">                content = ReadTemplateFile(fileName);</div><div class="line">                content = dealTemplateContent(content);</div><div class="line">                writeToFile(content, appPath + mModuleName.toLowerCase(), mModuleName + &quot;Activity.java&quot;);</div><div class="line">                break;</div><div class="line">            case Fragment:</div><div class="line">                fileName = &quot;TemplateFragment.txt&quot;;</div><div class="line">                content = ReadTemplateFile(fileName);</div><div class="line">                content = dealTemplateContent(content);</div><div class="line">                writeToFile(content, appPath + mModuleName.toLowerCase(), mModuleName + &quot;Fragment.java&quot;);</div><div class="line">                break;</div><div class="line">            case Contract:</div><div class="line">                fileName = &quot;TemplateContract.txt&quot;;</div><div class="line">                content = ReadTemplateFile(fileName);</div><div class="line">                content = dealTemplateContent(content);</div><div class="line">                writeToFile(content, appPath + mModuleName.toLowerCase(), mModuleName + &quot;Contract.java&quot;);</div><div class="line">                break;</div><div class="line">            case Presenter:</div><div class="line">                fileName = &quot;TemplatePresenter.txt&quot;;</div><div class="line">                content = ReadTemplateFile(fileName);</div><div class="line">                content = dealTemplateContent(content);</div><div class="line">                writeToFile(content, appPath + mModuleName.toLowerCase(), mModuleName + &quot;Presenter.java&quot;);</div><div class="line">                break;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 获取包名文件路径</div><div class="line">     * @return</div><div class="line">     */</div><div class="line">    private String getAppPath()&#123;</div><div class="line">        String packagePath = packageName.replace(&quot;.&quot;, &quot;/&quot;);</div><div class="line">        String appPath = project.getBasePath() + &quot;/App/src/main/java/&quot; + packagePath + &quot;/&quot;;</div><div class="line">        return appPath;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 替换模板中字符</div><div class="line">     * @param content</div><div class="line">     * @return</div><div class="line">     */</div><div class="line">    private String dealTemplateContent(String content) &#123;</div><div class="line">        content = content.replace(&quot;$name&quot;, mModuleName);</div><div class="line">        if (content.contains(&quot;$packagename&quot;))&#123;</div><div class="line">            content = content.replace(&quot;$packagename&quot;, packageName + &quot;.&quot; + mModuleName.toLowerCase());</div><div class="line">        &#125;</div><div class="line">        if (content.contains(&quot;$basepackagename&quot;))&#123;</div><div class="line">            content = content.replace(&quot;$basepackagename&quot;, packageName + &quot;.base&quot;);</div><div class="line">        &#125;</div><div class="line">        content = content.replace(&quot;$author&quot;, mAuthor);</div><div class="line">        content = content.replace(&quot;$date&quot;, getDate());</div><div class="line">        return content;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 获取当前时间</div><div class="line">     * @return</div><div class="line">     */</div><div class="line">    public String getDate() &#123;</div><div class="line">        Date currentTime = new Date();</div><div class="line">        SimpleDateFormat formatter = new SimpleDateFormat(&quot;yyyy/MM/dd&quot;);</div><div class="line">        String dateString = formatter.format(currentTime);</div><div class="line">        return dateString;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    /**</div><div class="line">     * 读取模板文件中的字符内容</div><div class="line">     * @param fileName 模板文件名</div><div class="line">     * @return</div><div class="line">     */</div><div class="line">    private String ReadTemplateFile(String fileName) &#123;</div><div class="line">        InputStream in = null;</div><div class="line">        in = this.getClass().getResourceAsStream(&quot;/Template/&quot; + fileName);</div><div class="line">        String content = &quot;&quot;;</div><div class="line">        try &#123;</div><div class="line">            content = new String(readStream(in));</div><div class="line">        &#125; catch (IOException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">        return content;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    private byte[] readStream(InputStream inputStream) throws IOException &#123;</div><div class="line">        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();</div><div class="line">        byte[] buffer = new byte[1024];</div><div class="line">        int len = -1;</div><div class="line">        try &#123;</div><div class="line">            while ((len = inputStream.read(buffer)) != -1)&#123;</div><div class="line">                outputStream.write(buffer, 0, len);</div><div class="line">            &#125;</div><div class="line">        &#125; catch (IOException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;finally &#123;</div><div class="line">            outputStream.close();</div><div class="line">            inputStream.close();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        return outputStream.toByteArray();</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    /**</div><div class="line">     * 生成</div><div class="line">     * @param content 类中的内容</div><div class="line">     * @param classPath 类文件路径</div><div class="line">     * @param className 类文件名称</div><div class="line">     */</div><div class="line">    private void writeToFile(String content, String classPath, String className) &#123;</div><div class="line">        try &#123;</div><div class="line">            File floder = new File(classPath);</div><div class="line">            if (!floder.exists())&#123;</div><div class="line">                floder.mkdirs();</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            File file = new File(classPath + &quot;/&quot; + className);</div><div class="line">            if (!file.exists()) &#123;</div><div class="line">                file.createNewFile();</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            FileWriter fw = new FileWriter(file.getAbsoluteFile());</div><div class="line">            BufferedWriter bw = new BufferedWriter(fw);</div><div class="line">            bw.write(content);</div><div class="line">            bw.close();</div><div class="line">        &#125; catch (IOException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 从AndroidManifest.xml文件中获取当前app的包名</div><div class="line">     * @return</div><div class="line">     */</div><div class="line">    private String getPackageName() &#123;</div><div class="line">        String package_name = &quot;&quot;;</div><div class="line">        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();</div><div class="line">        try &#123;</div><div class="line">            DocumentBuilder db = dbf.newDocumentBuilder();</div><div class="line">            Document doc = db.parse(project.getBasePath() + &quot;/App/src/main/AndroidManifest.xml&quot;);</div><div class="line"></div><div class="line">            NodeList nodeList = doc.getElementsByTagName(&quot;manifest&quot;);</div><div class="line">            for (int i = 0; i &lt; nodeList.getLength(); i++)&#123;</div><div class="line">                Node node = nodeList.item(i);</div><div class="line">                Element element = (Element) node;</div><div class="line">                package_name = element.getAttribute(&quot;package&quot;);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">        &#125; catch (Exception e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">        return package_name;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>说明一下，首先会获取包名，然后读取模板文件，替换模板文件中动态字符，在Dialog输入的作者和模块名称也会替换模板中字符，最后通过包名路径生成类文件，这是上面代码的一个简述，具体看代码吧。这样一个mvp框架代码生成插件已经完成，接下来看一下如何部署。</p>
+<h2 id="部署插件"><a href="#部署插件" class="headerlink" title="部署插件"></a>部署插件</h2><h3 id="填写插件信息"><a href="#填写插件信息" class="headerlink" title="填写插件信息"></a>填写插件信息</h3><p>找到plugin.xml文件，填入一些基本信息，如下图：<br><img src="/images/mvp_helper/5.png" width="700"></p>
+<p>填写一些插件的信息，像name、version、description…等等，填写的这些信息会在安装插件时，看到它的简介。</p>
+<p>然后点击Build-&gt;Prepare Plugin Module …… 如图：<br><img src="/images/mvp_helper/6.png" width="700"></p>
+<p>会在项目的根目录生成一个jar包：<br><img src="/images/mvp_helper/7.png" width="700"></p>
+<p>拿到这个jar包就可以安装到Android Studio了。</p>
+<h3 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h3><p>打开Android Studio，选择File-&gt;Setting-&gt;Plugins-&gt;Install plugin from disk，然后选择刚刚生成的jar包，如图：<br><img src="/images/mvp_helper/8.png" width="900"></p>
+<p>安装好了以后重启Studio即可使用。</p>
+<p>重启后可以看到在Code菜单下多了MvpHelper这个选项，点击或者快捷键Command+n调用。</p>
+<p>现在调用这个插件去生成代码吧！</p>
+<h3 id="上传到Plugins仓库"><a href="#上传到Plugins仓库" class="headerlink" title="上传到Plugins仓库"></a>上传到Plugins仓库</h3><p>如果你有个好的插件想要分享给你的小伙伴，但每次都要打成jar包发送给需要的人，然后对方需要Setting-&gt;Plugins-&gt;Install plugin from disk找到本地jar去安装使用。这样感觉太麻烦了，如果直接通过浏览Plugins仓库安装多好。按照下面步骤就可以实现：</p>
+<p>官方Plugins仓库地址：<a href="https://plugins.jetbrains.com/" target="_blank" rel="external">https://plugins.jetbrains.com/</a></p>
+<p>找到plugin.xml文件把下面这段代码打开：</p>
+<p>  <depends>com.intellij.modules.lang</depends><br>打开后代表在所有的插件仓库都可以搜到这个插件，即IntelliJ IDEA和Android Studio的仓库均可搜到，要不然只能在IntelliJ IDEA的仓库搜到。</p>
+<p>修改完plugin.xml文件后，重新生成jar，然后在仓库官网注册用户，上传插件，填写插件信息，等待审核通过。这样就可以在插件仓库搜索到自己的插件了，如下图：</p>
+<p><img src="/images/mvp_helper/9.png" width="900"></p>
+<p>##、最后</p>
+<p>到此本文结束，编写一个插件可以说就三步：</p>
+<ol>
+<li>下载IntelliJ IDEA，创建plugin项目；</li>
+<li>代码实现；</li>
+<li>生成jar包，部署插件；<br>步骤很简单，主要的是代码实现上比较麻烦，现在可以动脑去编写一些“偷懒”的插件吧。</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/07/10/2016_07_10_1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lishaowei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headicon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lishaowei">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/07/10/2016_07_10_1/" itemprop="url">Git-Flow 使用总结</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-10T15:30:00+08:00">
+                2016-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016/07/10/2016_07_10_1/" class="leancloud_visitors" data-flag-title="Git-Flow 使用总结">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="git-flow"><a href="#git-flow" class="headerlink" title="git flow"></a>git flow</h2><p>今天做新需求，使用git-flow开个新功能分支。可不料，SourceTree闹不开心。一直报错 如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Fatal: Not a gitflow-enabled repo yet. Please run &apos;git flow init&apos; first.</div></pre></td></tr></table></figure></p>
+<p>我的小乖乖， 你怎么出问题了呢。那我就去解决一下。</p>
+<p>google了一下，原来是我git glow没有初始化。</p>
+<p>然后我就去teminal中 去执行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git flow init</div></pre></td></tr></table></figure>
+<p>结果报错<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git: &apos;flow&apos; is not a git command. See &apos;git --help&apos;</div></pre></td></tr></table></figure></p>
+<p>好了，原来是我新电脑没有装git flow</p>
+<h2 id="如何配置"><a href="#如何配置" class="headerlink" title="如何配置"></a>如何配置</h2><p>使用brew下载<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install git-flow</div></pre></td></tr></table></figure></p>
+<p>下载好之后 初始化<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git flow init -f</div></pre></td></tr></table></figure></p>
+<p>然后就会让你搭建git分支架构，按照默认即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">Which branch should be used for bringing forth production releases?</div><div class="line">   - develop</div><div class="line">   - master</div><div class="line">   - release/9.2.3</div><div class="line">   - remote</div><div class="line">Branch name for production releases: [master]  </div><div class="line"></div><div class="line">Which branch should be used for integration of the &quot;next release&quot;?</div><div class="line">   - develop</div><div class="line">   - release/9.2.3</div><div class="line">   - remote</div><div class="line">Branch name for &quot;next release&quot; development: [develop] </div><div class="line"></div><div class="line">How to name your supporting branch prefixes?</div><div class="line">Feature branches? [feature/] </div><div class="line">Release branches? [release/] </div><div class="line">Hotfix branches? [hotfix/] </div><div class="line">Support branches? [support/] </div><div class="line">Version tag prefix? []</div></pre></td></tr></table></figure></p>
+<h2 id="git-flow流程图"><a href="#git-flow流程图" class="headerlink" title="git flow流程图"></a>git flow流程图</h2><p><img src="/images/mvp_helper/o_git-flow-nvie.png" width="800"></p>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><h3 id="新功能开发"><a href="#新功能开发" class="headerlink" title="新功能开发"></a>新功能开发</h3><h4 id="基于develop，开启新功能分支开发"><a href="#基于develop，开启新功能分支开发" class="headerlink" title="基于develop，开启新功能分支开发"></a>基于develop，开启新功能分支开发</h4><p>完成前面构建操作，当前所在分支就变成 develop. 任何开发都必须从 develop 开始：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git flow feature start feature-name</div></pre></td></tr></table></figure></p>
+<p>git-flow 从 develop 分支创建了一个新的分支 feature/feature-name，并自动切换到这个分支下面。然后就可以进行 feature-name 功能开发，中间可以多次的 commit 操作。</p>
+<p>将一个 f1 分支推到远程服务器，与其他开发人员协同开发：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">➜ git flow feature publish f1</div><div class="line"></div><div class="line">或者</div><div class="line"></div><div class="line">➜ git push origin feature/f1</div></pre></td></tr></table></figure></p>
+<h4 id="基于develop，开启新功能分支开发-1"><a href="#基于develop，开启新功能分支开发-1" class="headerlink" title="基于develop，开启新功能分支开发"></a>基于develop，开启新功能分支开发</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">➜ ➜ git flow feature finish f1</div></pre></td></tr></table></figure>
+<p>feature/f1 分支的代码会被合并到 develop 里面，然后删除该分支，切换回 develop. 到此，新功能开发这个场景完毕。在 f1 功能开发中，如果 f1 未完成，同时功能 f2 要开始进行，也是可以的。</p>
+<h3 id="发布上线"><a href="#发布上线" class="headerlink" title="发布上线"></a>发布上线</h3><h4 id="基于develop，开发发布分支"><a href="#基于develop，开发发布分支" class="headerlink" title="基于develop，开发发布分支"></a>基于develop，开发发布分支</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"> git flow release start 0.1</div><div class="line">Switched to a new branch &apos;release/0.1&apos;</div><div class="line"></div><div class="line">Summary of actions:</div><div class="line">- A new branch &apos;release/0.1&apos; was created, based on &apos;develop&apos;</div><div class="line">- You are now on branch &apos;release/0.1&apos;</div><div class="line"></div><div class="line">Follow-up actions:</div><div class="line">- Bump the version number now!</div><div class="line">- Start committing last-minute fixes in preparing your release</div><div class="line">- When done, run:</div><div class="line"></div><div class="line">git flow release finish &apos;0.1&apos;</div></pre></td></tr></table></figure>
+<h4 id="git-flow-从-develop-分支创建一个新的分支-release-0-1，并切换到该分支下，接下来要做的就是修改版本号等发布操作。完成后："><a href="#git-flow-从-develop-分支创建一个新的分支-release-0-1，并切换到该分支下，接下来要做的就是修改版本号等发布操作。完成后：" class="headerlink" title="git-flow 从 develop 分支创建一个新的分支 release/0.1，并切换到该分支下，接下来要做的就是修改版本号等发布操作。完成后："></a>git-flow 从 develop 分支创建一个新的分支 release/0.1，并切换到该分支下，接下来要做的就是修改版本号等发布操作。完成后：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"> git flow release finish 0.1</div><div class="line">Switched to branch &apos;master&apos;</div><div class="line">Merge made by the &apos;recursive&apos; strategy.</div><div class="line">f1      |    1 +</div><div class="line">version |    1 +</div><div class="line">2 files changed, 2 insertions(+)</div><div class="line">create mode 100644 f1</div><div class="line">create mode 100644 version</div><div class="line">Switched to branch &apos;develop&apos;</div><div class="line">Merge made by the &apos;recursive&apos; strategy.</div><div class="line">version |    1 +</div><div class="line">1 file changed, 1 insertion(+)</div><div class="line">create mode 100644 version</div><div class="line">Deleted branch release/0.1 (was d77df80).</div><div class="line"></div><div class="line">Summary of actions:</div><div class="line">- Latest objects have been fetched from &apos;origin&apos;</div><div class="line">- Release branch has been merged into &apos;master&apos;</div><div class="line">- The release was tagged &apos;0.1&apos;</div><div class="line">- Release branch has been back-merged into &apos;develop&apos;</div><div class="line">- Release branch &apos;release/0.1&apos; has been deleted</div></pre></td></tr></table></figure>
+<h4 id="打标签"><a href="#打标签" class="headerlink" title="打标签"></a>打标签</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"> git:(master) git tag</div><div class="line">0.1</div><div class="line">0.2</div></pre></td></tr></table></figure>
+<h3 id="线上出bug了-holy-s-t"><a href="#线上出bug了-holy-s-t" class="headerlink" title="线上出bug了 holy s**t"></a>线上出bug了 holy s**t</h3><h4 id="基于master，开启热修复分支"><a href="#基于master，开启热修复分支" class="headerlink" title="基于master，开启热修复分支"></a>基于master，开启热修复分支</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"> git flow hotfix start bug1</div><div class="line">Switched to a new branch &apos;hotfix/bug1&apos;</div><div class="line"></div><div class="line">Summary of actions:</div><div class="line">- A new branch &apos;hotfix/bug1&apos; was created, based on &apos;master&apos;</div><div class="line">- You are now on branch &apos;hotfix/bug1&apos;</div><div class="line"></div><div class="line">Follow-up actions:</div><div class="line">- Bump the version number now!</div><div class="line">- Start committing your hot fixes</div><div class="line">- When done, run:</div><div class="line"></div><div class="line">git flow hotfix finish &apos;bug1&apos;</div></pre></td></tr></table></figure>
+<h4 id="git-flow-从-master-分支创建一个新的分支-hotfix-bug1，并切换到该分支下。接下来要做的就是修复-bug，完成后："><a href="#git-flow-从-master-分支创建一个新的分支-hotfix-bug1，并切换到该分支下。接下来要做的就是修复-bug，完成后：" class="headerlink" title="git-flow 从 master 分支创建一个新的分支 hotfix/bug1，并切换到该分支下。接下来要做的就是修复 bug，完成后："></a>git-flow 从 master 分支创建一个新的分支 hotfix/bug1，并切换到该分支下。接下来要做的就是修复 bug，完成后：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">➜ git flow hotfix finish bug1</div><div class="line">   Switched to branch &apos;master&apos;</div><div class="line">   Merge made by the &apos;recursive&apos; strategy.</div><div class="line">   f1 |    2 +-</div><div class="line">   1 file changed, 1 insertion(+), 1 deletion(-)</div><div class="line">   Switched to branch &apos;develop&apos;</div><div class="line">   Merge made by the &apos;recursive&apos; strategy.</div><div class="line">   f1 |    2 +-</div><div class="line">   1 file changed, 1 insertion(+), 1 deletion(-)</div><div class="line">   Deleted branch hotfix/bug1 (was aa3ca2e).</div><div class="line">   </div><div class="line">   Summary of actions:</div><div class="line">   - Latest objects have been fetched from &apos;origin&apos;</div><div class="line">   - Hotfix branch has been merged into &apos;master&apos;</div><div class="line">   - The hotfix was tagged &apos;bug1&apos;</div><div class="line">   - Hotfix branch has been back-merged into &apos;develop&apos;</div><div class="line">   - Hotfix branch &apos;hotfix/bug1&apos; has been deleted</div></pre></td></tr></table></figure>
+<p>git-flow 会依次切换到 master develop 分支下合并 hotfix/bug1，然后删掉 hotfix/bug1。到此，hotfix 完成。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/25/2016_06_26_4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lishaowei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headicon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lishaowei">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/06/25/2016_06_26_4/" itemprop="url">GreenDao 3.0使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-25T09:30:00+08:00">
+                2016-06-25
               </time>
             
 
@@ -347,7 +830,7 @@
 
           
           
-             <span id="/2017/07/08/2017_07_07_4/" class="leancloud_visitors" data-flag-title="GreenDao 3.0使用">
+             <span id="/2016/06/25/2016_06_26_4/" class="leancloud_visitors" data-flag-title="GreenDao 3.0使用">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -461,7 +944,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/07/2017_07_05_2/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/02/2016_05_02_3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="lishaowei">
@@ -480,7 +963,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/07/07/2017_07_05_2/" itemprop="url">用InteliJ IDEA 写一个适用于生成的mvp插件</a></h1>
+                <a class="post-title-link" href="/2016/05/02/2016_05_02_3/" itemprop="url">Retrofit2.0 + OkHttp3.0的配置使用</a></h1>
         
 
         <div class="post-meta">
@@ -492,347 +975,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-07T19:48:33+08:00">
-                2017-07-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Idea插件/" itemprop="url" rel="index">
-                    <span itemprop="name">Idea插件</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/07/07/2017_07_05_2/" class="leancloud_visitors" data-flag-title="用InteliJ IDEA 写一个适用于生成的mvp插件">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>现在大部分的框架都是 MVP + Dagger ，但是如果你自己去写所有的类的话，也要花费不少功夫<br>说不定dagger还会编译错误</p>
-<p>so ，mvp插件应运而生</p>
-<h2 id="创建一个Plugin项目"><a href="#创建一个Plugin项目" class="headerlink" title="创建一个Plugin项目"></a>创建一个Plugin项目</h2><p>  打开idea ，File-&gt;New-&gt;Project 然后选择一个plugin项目 。选择 intellij platfrom plugin </p>
-<p>  点击Next，输入项目的名称即可，这里取名MvpCreate。</p>
-<p>  项目目录下的 plugin.xml为项目的说明文件，会包含一些项目的版权、作者和声明。其中主要标签为<actions>，这里会是插件的入口。</actions></p>
-<p>  src目录下存放主要的代码。</p>
-<h2 id="创建一个菜单"><a href="#创建一个菜单" class="headerlink" title="创建一个菜单"></a>创建一个菜单</h2><p>  现在我们开始建一个自己的菜单，选择src-&gt;New-&gt;Action，<br>  <img src="/images/mvp_helper/11.png" width="900"><br>  然后填写这个Action的信息： 注意⚠️：这里我用的是command+n 在generate保存<br>  <img src="/images/mvp_helper/12.png" width="900"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">说明一下需要填写的属性：</div><div class="line"></div><div class="line">Action ID：代表这个Action的唯一标示。</div><div class="line"></div><div class="line">Class Name：类名</div><div class="line"></div><div class="line">Name：这个插件在菜单上的名称</div><div class="line"></div><div class="line">Description：关于这个插件的描述信息</div><div class="line"></div><div class="line">Groups：代表这个插件会出现的位置。比如想让这个插件出现在Code菜单下的第一次选项，我在图中选择CodeMenu（Code），右边Anchor选择First</div><div class="line"></div><div class="line">Keyboard Shortcuts：快捷键设置。图中设置Command+n</div></pre></td></tr></table></figure></p>
-<p>同时看一下plugin.xml这个文件，会发现<actions>标签下多出来了一个<action>标签，里面包含了我们刚刚填写的信息。<br>eas<br>这样一个插件就生成了。把这个插件部署到studio已经可以使用，具体如何部署接下来会讲，继续往下看。</action></actions></p>
-<h2 id="编写插件代码"><a href="#编写插件代码" class="headerlink" title="编写插件代码"></a>编写插件代码</h2><p>先说一下思路：</p>
-<p>生成代码我们可以使用一些模板，这个模板可以是一个txt文件，在模板里面添加代码，提取出需要替换的代码，然后通过流读取模板文件，最后生成类文件。基本上就是这样的思路，接下来具体实现：</p>
-<h3 id="新建模板文件"><a href="#新建模板文件" class="headerlink" title="新建模板文件"></a>新建模板文件</h3><p>我们按照官网的mvp风格来编写整体的框架，这里按功能模块分包，包含Activity、Fragment、Presenter、Contract，然后加上base类，BasePresenter、BaseView、BaseActivity、BaseFragment。看一下：<br><img src="/images/mvp_helper/1.png" width="800"></p>
-<p>看一下TemplateContract.txt这个文件的内部细节：<br><img src="/images/mvp_helper/2.png" width="800"></p>
-<p>代码里面的$packagename、$basepackagename、$author、$description、$date、$name这些字符都是可以动态替换的。这些模板文件的具体代码细节在文末的源码中查看，当然也可以根据自己的需要写入自己的代码。</p>
-<h3 id="新建dialog"><a href="#新建dialog" class="headerlink" title="新建dialog"></a>新建dialog</h3><p>上面的模板已经建好，现在我们需要一个对话框，在对话框里面输入作者和模块的名字。效果看一下：<br><img src="/images/mvp_helper/3.png" width="300"></p>
-<p>很简单的效果图，和创建Action一样，Dialog可以直接在src下右键New-&gt;Dialog取名MyDialog，然后会在src目录下生生成一个MyDialog.java和MyDialog.form的文件，点击这个MyDialog.form文件会进入一个可视化界面，通过拖拽就可以实现一个用户界面：<br><img src="/images/mvp_helper/4.png" width="800"></p>
-<p>然后看一下MyDialog.java这个类的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div></pre></td><td class="code"><pre><div class="line">import javax.swing.*;</div><div class="line">import java.awt.event.*;</div><div class="line"></div><div class="line">public class MyDialog extends JDialog &#123;</div><div class="line">    private JPanel contentPane;</div><div class="line">    private JButton buttonOK;</div><div class="line">    private JButton buttonCancel;</div><div class="line">    private JTextField textField1;</div><div class="line">    private JTextField textField2;</div><div class="line"></div><div class="line">    private DialogCallBack mCallBack;</div><div class="line"></div><div class="line">    public MyDialog(DialogCallBack callBack) &#123;</div><div class="line">        this.mCallBack = callBack;</div><div class="line">        setTitle(&quot;Mvp Create Helper&quot;);</div><div class="line">        setContentPane(contentPane);</div><div class="line">        setModal(true);</div><div class="line">        getRootPane().setDefaultButton(buttonOK);</div><div class="line">        setSize(300, 150);</div><div class="line">        setLocationRelativeTo(null);</div><div class="line">        buttonOK.addActionListener(new ActionListener() &#123;</div><div class="line">            public void actionPerformed(ActionEvent e) &#123;</div><div class="line">                onOK();</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line"></div><div class="line">        buttonCancel.addActionListener(new ActionListener() &#123;</div><div class="line">            public void actionPerformed(ActionEvent e) &#123;</div><div class="line">                onCancel();</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line"></div><div class="line">        // call onCancel() when cross is clicked</div><div class="line">        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);</div><div class="line">        addWindowListener(new WindowAdapter() &#123;</div><div class="line">            public void windowClosing(WindowEvent e) &#123;</div><div class="line">                onCancel();</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line"></div><div class="line">        // call onCancel() on ESCAPE</div><div class="line">        contentPane.registerKeyboardAction(new ActionListener() &#123;</div><div class="line">            public void actionPerformed(ActionEvent e) &#123;</div><div class="line">                onCancel();</div><div class="line">            &#125;</div><div class="line">        &#125;, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private void onOK() &#123;</div><div class="line">        // add your code here</div><div class="line">        if (null != mCallBack)&#123;</div><div class="line">            mCallBack.ok(textField1.getText().trim(), textField2.getText().trim());</div><div class="line">        &#125;</div><div class="line">        dispose();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private void onCancel() &#123;</div><div class="line">        // add your code here if necessary</div><div class="line">        dispose();</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    public interface DialogCallBack&#123;</div><div class="line">        void ok(String author, String moduleName);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h3 id="生成代码实现"><a href="#生成代码实现" class="headerlink" title="生成代码实现"></a>生成代码实现</h3><p>好了现在去看看MvpCreateAction这个类的具体实现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div><div class="line">255</div><div class="line">256</div><div class="line">257</div><div class="line">258</div><div class="line">259</div><div class="line">260</div><div class="line">261</div><div class="line">262</div><div class="line">263</div><div class="line">264</div><div class="line">265</div><div class="line">266</div><div class="line">267</div><div class="line">268</div><div class="line">269</div><div class="line">270</div><div class="line">271</div><div class="line">272</div><div class="line">273</div><div class="line">274</div><div class="line">275</div><div class="line">276</div><div class="line">277</div><div class="line">278</div><div class="line">279</div><div class="line">280</div><div class="line">281</div><div class="line">282</div><div class="line">283</div><div class="line">284</div></pre></td><td class="code"><pre><div class="line">import com.intellij.openapi.actionSystem.AnAction;</div><div class="line">import com.intellij.openapi.actionSystem.AnActionEvent;</div><div class="line">import com.intellij.openapi.actionSystem.PlatformDataKeys;</div><div class="line">import com.intellij.openapi.project.Project;</div><div class="line">import com.intellij.openapi.ui.Messages;</div><div class="line">import org.w3c.dom.Document;</div><div class="line">import org.w3c.dom.Element;</div><div class="line">import org.w3c.dom.Node;</div><div class="line">import org.w3c.dom.NodeList;</div><div class="line"></div><div class="line">import javax.xml.parsers.DocumentBuilder;</div><div class="line">import javax.xml.parsers.DocumentBuilderFactory;</div><div class="line">import java.io.*;</div><div class="line">import java.text.SimpleDateFormat;</div><div class="line">import java.util.Date;</div><div class="line"></div><div class="line">public class MvpCreateAction extends AnAction &#123;</div><div class="line"></div><div class="line">    private Project project;</div><div class="line">    //包名</div><div class="line">    private String packageName = &quot;&quot;;</div><div class="line">    private String mAuthor;//作者</div><div class="line">    private String mModuleName;//模块名称</div><div class="line"></div><div class="line">    private enum  CodeType &#123;</div><div class="line">        Activity, Fragment, Contract, Presenter, BaseView, BasePresenter, MvpBaseActivity, MvpBaseFragment</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void actionPerformed(AnActionEvent e) &#123;</div><div class="line">        project = e.getData(PlatformDataKeys.PROJECT);</div><div class="line">        packageName = getPackageName();</div><div class="line">        init();</div><div class="line">        refreshProject(e);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 刷新项目</div><div class="line">     * @param e</div><div class="line">     */</div><div class="line">    private void refreshProject(AnActionEvent e) &#123;</div><div class="line">        e.getProject().getBaseDir().refresh(false, true);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 初始化Dialog</div><div class="line">     */</div><div class="line">    private void init()&#123;</div><div class="line">        MyDialog myDialog = new MyDialog(new MyDialog.DialogCallBack() &#123;</div><div class="line">            @Override</div><div class="line">            public void ok(String author, String moduleName) &#123;</div><div class="line">                mAuthor = author;</div><div class="line">                mModuleName = moduleName;</div><div class="line">                createClassFiles();</div><div class="line">                Messages.showInfoMessage(project,&quot;create mvp code success&quot;,&quot;title&quot;);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">        myDialog.setVisible(true);</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 生成类文件</div><div class="line">     */</div><div class="line">    private void createClassFiles() &#123;</div><div class="line">        createClassFile(CodeType.Activity);</div><div class="line">        createClassFile(CodeType.Fragment);</div><div class="line">        createClassFile(CodeType.Contract);</div><div class="line">        createClassFile(CodeType.Presenter);</div><div class="line">        createBaseClassFile(CodeType.BaseView);</div><div class="line">        createBaseClassFile(CodeType.BasePresenter);</div><div class="line">        createBaseClassFile(CodeType.MvpBaseActivity);</div><div class="line">        createBaseClassFile(CodeType.MvpBaseFragment);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 生成base类</div><div class="line">     * @param codeType</div><div class="line">     */</div><div class="line">    private void createBaseClassFile(CodeType codeType) &#123;</div><div class="line">        String fileName = &quot;&quot;;</div><div class="line">        String content = &quot;&quot;;</div><div class="line">        String basePath = getAppPath() + &quot;base/&quot;;</div><div class="line">        switch (codeType)&#123;</div><div class="line">            case BaseView:</div><div class="line">                if (!new File(basePath + &quot;BaseView.java&quot;).exists())&#123;</div><div class="line">                    fileName = &quot;TemplateBaseView.txt&quot;;</div><div class="line">                    content = ReadTemplateFile(fileName);</div><div class="line">                    content = dealTemplateContent(content);</div><div class="line">                    writeToFile(content, basePath, &quot;BaseView.java&quot;);</div><div class="line">                &#125;</div><div class="line">                break;</div><div class="line">            case BasePresenter:</div><div class="line">                if (!new File(basePath + &quot;BasePresenter.java&quot;).exists())&#123;</div><div class="line">                    fileName = &quot;TemplateBasePresenter.txt&quot;;</div><div class="line">                    content = ReadTemplateFile(fileName);</div><div class="line">                    content = dealTemplateContent(content);</div><div class="line">                    writeToFile(content, basePath, &quot;BasePresenter.java&quot;);</div><div class="line">                &#125;</div><div class="line">                break;</div><div class="line">            case MvpBaseActivity:</div><div class="line">                if (!new File(basePath + &quot;MvpBaseActivity.java&quot;).exists())&#123;</div><div class="line">                    fileName = &quot;TemplateMvpBaseActivity.txt&quot;;</div><div class="line">                    content = ReadTemplateFile(fileName);</div><div class="line">                    content = dealTemplateContent(content);</div><div class="line">                    writeToFile(content, basePath, &quot;MvpBaseActivity.java&quot;);</div><div class="line">                &#125;</div><div class="line">                break;</div><div class="line">            case MvpBaseFragment:</div><div class="line">                if (!new File(basePath + &quot;MvpBaseFragment.java&quot;).exists())&#123;</div><div class="line">                    fileName = &quot;TemplateMvpBaseFragment.txt&quot;;</div><div class="line">                    content = ReadTemplateFile(fileName);</div><div class="line">                    content = dealTemplateContent(content);</div><div class="line">                    writeToFile(content, basePath, &quot;MvpBaseFragment.java&quot;);</div><div class="line">                &#125;</div><div class="line">                break;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 生成mvp框架代码</div><div class="line">     * @param codeType</div><div class="line">     */</div><div class="line">    private void createClassFile(CodeType codeType) &#123;</div><div class="line">        String fileName = &quot;&quot;;</div><div class="line">        String content = &quot;&quot;;</div><div class="line">        String appPath = getAppPath();</div><div class="line">        switch (codeType)&#123;</div><div class="line">            case Activity:</div><div class="line">                fileName = &quot;TemplateActivity.txt&quot;;</div><div class="line">                content = ReadTemplateFile(fileName);</div><div class="line">                content = dealTemplateContent(content);</div><div class="line">                writeToFile(content, appPath + mModuleName.toLowerCase(), mModuleName + &quot;Activity.java&quot;);</div><div class="line">                break;</div><div class="line">            case Fragment:</div><div class="line">                fileName = &quot;TemplateFragment.txt&quot;;</div><div class="line">                content = ReadTemplateFile(fileName);</div><div class="line">                content = dealTemplateContent(content);</div><div class="line">                writeToFile(content, appPath + mModuleName.toLowerCase(), mModuleName + &quot;Fragment.java&quot;);</div><div class="line">                break;</div><div class="line">            case Contract:</div><div class="line">                fileName = &quot;TemplateContract.txt&quot;;</div><div class="line">                content = ReadTemplateFile(fileName);</div><div class="line">                content = dealTemplateContent(content);</div><div class="line">                writeToFile(content, appPath + mModuleName.toLowerCase(), mModuleName + &quot;Contract.java&quot;);</div><div class="line">                break;</div><div class="line">            case Presenter:</div><div class="line">                fileName = &quot;TemplatePresenter.txt&quot;;</div><div class="line">                content = ReadTemplateFile(fileName);</div><div class="line">                content = dealTemplateContent(content);</div><div class="line">                writeToFile(content, appPath + mModuleName.toLowerCase(), mModuleName + &quot;Presenter.java&quot;);</div><div class="line">                break;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 获取包名文件路径</div><div class="line">     * @return</div><div class="line">     */</div><div class="line">    private String getAppPath()&#123;</div><div class="line">        String packagePath = packageName.replace(&quot;.&quot;, &quot;/&quot;);</div><div class="line">        String appPath = project.getBasePath() + &quot;/App/src/main/java/&quot; + packagePath + &quot;/&quot;;</div><div class="line">        return appPath;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 替换模板中字符</div><div class="line">     * @param content</div><div class="line">     * @return</div><div class="line">     */</div><div class="line">    private String dealTemplateContent(String content) &#123;</div><div class="line">        content = content.replace(&quot;$name&quot;, mModuleName);</div><div class="line">        if (content.contains(&quot;$packagename&quot;))&#123;</div><div class="line">            content = content.replace(&quot;$packagename&quot;, packageName + &quot;.&quot; + mModuleName.toLowerCase());</div><div class="line">        &#125;</div><div class="line">        if (content.contains(&quot;$basepackagename&quot;))&#123;</div><div class="line">            content = content.replace(&quot;$basepackagename&quot;, packageName + &quot;.base&quot;);</div><div class="line">        &#125;</div><div class="line">        content = content.replace(&quot;$author&quot;, mAuthor);</div><div class="line">        content = content.replace(&quot;$date&quot;, getDate());</div><div class="line">        return content;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 获取当前时间</div><div class="line">     * @return</div><div class="line">     */</div><div class="line">    public String getDate() &#123;</div><div class="line">        Date currentTime = new Date();</div><div class="line">        SimpleDateFormat formatter = new SimpleDateFormat(&quot;yyyy/MM/dd&quot;);</div><div class="line">        String dateString = formatter.format(currentTime);</div><div class="line">        return dateString;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    /**</div><div class="line">     * 读取模板文件中的字符内容</div><div class="line">     * @param fileName 模板文件名</div><div class="line">     * @return</div><div class="line">     */</div><div class="line">    private String ReadTemplateFile(String fileName) &#123;</div><div class="line">        InputStream in = null;</div><div class="line">        in = this.getClass().getResourceAsStream(&quot;/Template/&quot; + fileName);</div><div class="line">        String content = &quot;&quot;;</div><div class="line">        try &#123;</div><div class="line">            content = new String(readStream(in));</div><div class="line">        &#125; catch (IOException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">        return content;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    private byte[] readStream(InputStream inputStream) throws IOException &#123;</div><div class="line">        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();</div><div class="line">        byte[] buffer = new byte[1024];</div><div class="line">        int len = -1;</div><div class="line">        try &#123;</div><div class="line">            while ((len = inputStream.read(buffer)) != -1)&#123;</div><div class="line">                outputStream.write(buffer, 0, len);</div><div class="line">            &#125;</div><div class="line">        &#125; catch (IOException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;finally &#123;</div><div class="line">            outputStream.close();</div><div class="line">            inputStream.close();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        return outputStream.toByteArray();</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    /**</div><div class="line">     * 生成</div><div class="line">     * @param content 类中的内容</div><div class="line">     * @param classPath 类文件路径</div><div class="line">     * @param className 类文件名称</div><div class="line">     */</div><div class="line">    private void writeToFile(String content, String classPath, String className) &#123;</div><div class="line">        try &#123;</div><div class="line">            File floder = new File(classPath);</div><div class="line">            if (!floder.exists())&#123;</div><div class="line">                floder.mkdirs();</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            File file = new File(classPath + &quot;/&quot; + className);</div><div class="line">            if (!file.exists()) &#123;</div><div class="line">                file.createNewFile();</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            FileWriter fw = new FileWriter(file.getAbsoluteFile());</div><div class="line">            BufferedWriter bw = new BufferedWriter(fw);</div><div class="line">            bw.write(content);</div><div class="line">            bw.close();</div><div class="line">        &#125; catch (IOException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 从AndroidManifest.xml文件中获取当前app的包名</div><div class="line">     * @return</div><div class="line">     */</div><div class="line">    private String getPackageName() &#123;</div><div class="line">        String package_name = &quot;&quot;;</div><div class="line">        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();</div><div class="line">        try &#123;</div><div class="line">            DocumentBuilder db = dbf.newDocumentBuilder();</div><div class="line">            Document doc = db.parse(project.getBasePath() + &quot;/App/src/main/AndroidManifest.xml&quot;);</div><div class="line"></div><div class="line">            NodeList nodeList = doc.getElementsByTagName(&quot;manifest&quot;);</div><div class="line">            for (int i = 0; i &lt; nodeList.getLength(); i++)&#123;</div><div class="line">                Node node = nodeList.item(i);</div><div class="line">                Element element = (Element) node;</div><div class="line">                package_name = element.getAttribute(&quot;package&quot;);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">        &#125; catch (Exception e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">        return package_name;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>说明一下，首先会获取包名，然后读取模板文件，替换模板文件中动态字符，在Dialog输入的作者和模块名称也会替换模板中字符，最后通过包名路径生成类文件，这是上面代码的一个简述，具体看代码吧。这样一个mvp框架代码生成插件已经完成，接下来看一下如何部署。</p>
-<h2 id="部署插件"><a href="#部署插件" class="headerlink" title="部署插件"></a>部署插件</h2><h3 id="填写插件信息"><a href="#填写插件信息" class="headerlink" title="填写插件信息"></a>填写插件信息</h3><p>找到plugin.xml文件，填入一些基本信息，如下图：<br><img src="/images/mvp_helper/5.png" width="700"></p>
-<p>填写一些插件的信息，像name、version、description…等等，填写的这些信息会在安装插件时，看到它的简介。</p>
-<p>然后点击Build-&gt;Prepare Plugin Module …… 如图：<br><img src="/images/mvp_helper/6.png" width="700"></p>
-<p>会在项目的根目录生成一个jar包：<br><img src="/images/mvp_helper/7.png" width="700"></p>
-<p>拿到这个jar包就可以安装到Android Studio了。</p>
-<h3 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h3><p>打开Android Studio，选择File-&gt;Setting-&gt;Plugins-&gt;Install plugin from disk，然后选择刚刚生成的jar包，如图：<br><img src="/images/mvp_helper/8.png" width="900"></p>
-<p>安装好了以后重启Studio即可使用。</p>
-<p>重启后可以看到在Code菜单下多了MvpHelper这个选项，点击或者快捷键Command+n调用。</p>
-<p>现在调用这个插件去生成代码吧！</p>
-<h3 id="上传到Plugins仓库"><a href="#上传到Plugins仓库" class="headerlink" title="上传到Plugins仓库"></a>上传到Plugins仓库</h3><p>如果你有个好的插件想要分享给你的小伙伴，但每次都要打成jar包发送给需要的人，然后对方需要Setting-&gt;Plugins-&gt;Install plugin from disk找到本地jar去安装使用。这样感觉太麻烦了，如果直接通过浏览Plugins仓库安装多好。按照下面步骤就可以实现：</p>
-<p>官方Plugins仓库地址：<a href="https://plugins.jetbrains.com/" target="_blank" rel="external">https://plugins.jetbrains.com/</a></p>
-<p>找到plugin.xml文件把下面这段代码打开：</p>
-<p>  <depends>com.intellij.modules.lang</depends><br>打开后代表在所有的插件仓库都可以搜到这个插件，即IntelliJ IDEA和Android Studio的仓库均可搜到，要不然只能在IntelliJ IDEA的仓库搜到。</p>
-<p>修改完plugin.xml文件后，重新生成jar，然后在仓库官网注册用户，上传插件，填写插件信息，等待审核通过。这样就可以在插件仓库搜索到自己的插件了，如下图：</p>
-<p><img src="/images/mvp_helper/9.png" width="900"></p>
-<p>##、最后</p>
-<p>到此本文结束，编写一个插件可以说就三步：</p>
-<ol>
-<li>下载IntelliJ IDEA，创建plugin项目；</li>
-<li>代码实现；</li>
-<li>生成jar包，部署插件；<br>步骤很简单，主要的是代码实现上比较麻烦，现在可以动脑去编写一些“偷懒”的插件吧。</li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/07/2017_07_05_1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="lishaowei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/headicon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="lishaowei">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/07/2017_07_05_1/" itemprop="url">Android 动态权限适配方案</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-07T19:48:33+08:00">
-                2017-07-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/07/07/2017_07_05_1/" class="leancloud_visitors" data-flag-title="Android 动态权限适配方案">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>   Google官方在6.0版本上对于应用权限的调用作出了大大的修改。在6.0版本之前，应用App需要用到什么权限只需要在AndroidManifest.xml配置文件中增加相对应权限的配置，<br>   然后在App中就可以随便无限制的使用这些权限来访问用户的设备了。由于这种权限的漏洞，导致了大量的用户信息的泄露。所以在6.0版本上，Android官方团队重新修改了这个权限的申请方式。<br>   在新的权限模式之下，用户将能够根据自己的实际需要在运行时中对各项权限进行审核，且随时关闭其中的部分权限。</p>
-<p>   在M版本中，android权限被分为了3大类，默认权限、签名权限和危险权限，其中默认权限和签名权限都为安装时权限，<br>   即只要在AndroidManifest.xml中配置，就可以在app运行时放心大胆的使用。但是对于危险权限，不仅要再AndroidManifest.xml中配置，<br>   还要在代码中动态去申请，因为这些权限不是默认就授予的，而是运行时去向用户申请的。</p>
-<h2 id="危险权限"><a href="#危险权限" class="headerlink" title="危险权限"></a>危险权限</h2><p>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">group:android.permission-group.CONTACTS</div><div class="line">    permission:android.permission.WRITE_CONTACTS</div><div class="line">    permission:android.permission.GET_ACCOUNTS</div><div class="line">    permission:android.permission.READ_CONTACTS</div><div class="line">group:android.permission-group.PHONE</div><div class="line">    permission:android.permission.READ_CALL_LOG</div><div class="line">    permission:android.permission.READ_PHONE_STATE</div><div class="line">    permission:android.permission.CALL_PHONE</div><div class="line">    permission:android.permission.WRITE_CALL_LOG</div><div class="line">    permission:android.permission.USE_SIP</div><div class="line">    permission:android.permission.PROCESS_OUTGOING_CALLS</div><div class="line">    permission:com.android.voicemail.permission.ADD_VOICEMAIL</div><div class="line">group:android.permission-group.CALENDAR</div><div class="line">    permission:android.permission.READ_CALENDAR</div><div class="line">    permission:android.permission.WRITE_CALENDAR</div><div class="line">group:android.permission-group.CAMERA</div><div class="line">    permission:android.permission.CAMERA</div><div class="line">group:android.permission-group.SENSORS</div><div class="line">    permission:android.permission.BODY_SENSORS</div><div class="line">group:android.permission-group.LOCATION</div><div class="line">    permission:android.permission.ACCESS_FINE_LOCATION</div><div class="line">    permission:android.permission.ACCESS_COARSE_LOCATION</div><div class="line">group:android.permission-group.STORAGE</div><div class="line">    permission:android.permission.READ_EXTERNAL_STORAGE</div><div class="line">    permission:android.permission.WRITE_EXTERNAL_STORAGE</div><div class="line">group:android.permission-group.MICROPHONE</div><div class="line">    permission:android.permission.RECORD_AUDIO</div><div class="line">group:android.permission-group.SMS</div><div class="line">    permission:android.permission.READ_SMS</div><div class="line">    permission:android.permission.RECEIVE_WAP_PUSH</div><div class="line">    permission:android.permission.RECEIVE_MMS</div><div class="line">    permission:android.permission.RECEIVE_SMS</div><div class="line">    permission:android.permission.SEND_SMS</div><div class="line">    permission:android.permission.READ_CELL_BROADCASTS</div><div class="line">​</div></pre></td></tr></table></figure></p>
-<h2 id="使用RxPermissions"><a href="#使用RxPermissions" class="headerlink" title="使用RxPermissions"></a>使用RxPermissions</h2><h3 id="Set-up"><a href="#Set-up" class="headerlink" title="Set up"></a>Set up</h3><p>To use this library your minSdkVersion must be &gt;= 11.</p>
-<p>In your build.gradle :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">repositories &#123;</div><div class="line">    jcenter() // If not already there</div><div class="line">&#125;</div><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    compile &apos;com.tbruyelle.rxpermissions:rxpermissions:0.9.4@aar&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h3 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h3><p>Create a RxPermissions instance :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">RxPermissions rxPermissions = new RxPermissions(this); // where this is an Activity instance</div></pre></td></tr></table></figure></p>
-<p>Example : request the CAMERA permission (with Retrolambda for brevity, but not required)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">// Must be done during an initialization phase like onCreate</div><div class="line">rxPermissions</div><div class="line">    .request(Manifest.permission.CAMERA)</div><div class="line">    .subscribe(granted -&gt; &#123;</div><div class="line">        if (granted) &#123; // Always true pre-M</div><div class="line">           // I can control the camera now</div><div class="line">        &#125; else &#123;</div><div class="line">           // Oups permission denied</div><div class="line">        &#125;</div><div class="line">    &#125;);</div></pre></td></tr></table></figure></p>
-<p>If you need to trigger the permission request from a specific event, you need to setup your event as an observable inside an initialization phase.</p>
-<p>You can use JakeWharton/RxBinding to turn your view to an observable (not included in the library).</p>
-<p>Example :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">// Must be done during an initialization phase like onCreate</div><div class="line">RxView.clicks(findViewById(R.id.enableCamera))</div><div class="line">    .compose(rxPermissions.ensure(Manifest.permission.CAMERA))</div><div class="line">    .subscribe(granted -&gt; &#123;</div><div class="line">        // R.id.enableCamera has been clicked</div><div class="line">    &#125;);</div><div class="line">If multiple permissions at the same time, the result is combined :</div><div class="line"></div><div class="line">rxPermissions</div><div class="line">    .request(Manifest.permission.CAMERA,</div><div class="line">             Manifest.permission.READ_PHONE_STATE)</div><div class="line">    .subscribe(granted -&gt; &#123;</div><div class="line">        if (granted) &#123;</div><div class="line">           // All requested permissions are granted</div><div class="line">        &#125; else &#123;</div><div class="line">           // At least one permission is denied</div><div class="line">        &#125;</div><div class="line">    &#125;);</div></pre></td></tr></table></figure></p>
-<p>You can also observe a detailed result with requestEach or ensureEach :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">rxPermissions</div><div class="line">    .requestEach(Manifest.permission.CAMERA,</div><div class="line">             Manifest.permission.READ_PHONE_STATE)</div><div class="line">    .subscribe(permission -&gt; &#123; // will emit 2 Permission objects</div><div class="line">        if (permission.granted) &#123;</div><div class="line">           // `permission.name` is granted !</div><div class="line">        &#125; else if (permission.shouldShowRequestPermissionRationale)</div><div class="line">           // Denied permission without ask never again</div><div class="line">        &#125; else &#123;</div><div class="line">           // Denied permission with ask never again</div><div class="line">           // Need to go to the settings</div><div class="line">        &#125;</div><div class="line">    &#125;);</div></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/07/2017_07_07_3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="lishaowei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/headicon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="lishaowei">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/07/2017_07_07_3/" itemprop="url">Retrofit2.0 + OkHttp3.0的配置使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-07T14:08:50+08:00">
-                2017-07-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-02T14:30:00+08:00">
+                2016-05-02
               </time>
             
 
@@ -871,7 +1015,7 @@
 
           
           
-             <span id="/2017/07/07/2017_07_07_3/" class="leancloud_visitors" data-flag-title="Retrofit2.0 + OkHttp3.0的配置使用">
+             <span id="/2016/05/02/2016_05_02_3/" class="leancloud_visitors" data-flag-title="Retrofit2.0 + OkHttp3.0的配置使用">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1328,7 +1472,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
