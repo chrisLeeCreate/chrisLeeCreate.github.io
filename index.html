@@ -773,6 +773,169 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/07/14/2016_07_14/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lishaowei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headicon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lishaowei">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/07/14/2016_07_14/" itemprop="url">Retrofit 2 动态代理源码解读</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-14T16:24:00+08:00">
+                2016-07-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Retrofit/" itemprop="url" rel="index">
+                    <span itemprop="name">Retrofit</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016/07/14/2016_07_14/" class="leancloud_visitors" data-flag-title="Retrofit 2 动态代理源码解读">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Retrofit 2，对okhttp 进行了封装。 并且使用了动态代理。<br>通过接口在运行时生成字节码，然后通过注解拼装HTTP请求。</p>
+<h2 id="Retrofit-2之动态代理"><a href="#Retrofit-2之动态代理" class="headerlink" title="Retrofit 2之动态代理"></a>Retrofit 2之动态代理</h2><h3 id="动态代理是什么"><a href="#动态代理是什么" class="headerlink" title="动态代理是什么"></a>动态代理是什么</h3><p>这里浅谈一下，代理是一种设计模式，分为动态代理和静态代理</p>
+<p>没有代理，就是”调用者”直接实现”业务”<br>有代理后，就是”调用者”通过 “对业务进行封装”的代理， 间接实现”业务”</p>
+<h4 id="静态代理"><a href="#静态代理" class="headerlink" title="静态代理"></a>静态代理</h4><p>比如说，你可以直接对数据库进行增删改查的sql语句操作，可是要封装成<br>增删改查的方法，就属于静态代理</p>
+<h4 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h4><p>动态代理是java中字节码生成技术。通过接口生成代理类。<br>将代理类交给<strong>InvocationHandler</strong>具体实现</p>
+<p><em>Retrofit中为了简化复杂的网络请求，通过动态代理的去处理解析与拼装。
+</em>希望给某个方法在执行的过程中添加权限控制或者打log，这时我们可以用动态代理生成后在handler中装饰多余的业务，从而保存原有的方法专注于业务本身（即AOP编程），例子在这里。<br>*在运行时“欺上瞒下”，比如360的插件化技术的实现</p>
+<h3 id="自己实现一下-动态代理"><a href="#自己实现一下-动态代理" class="headerlink" title="自己实现一下 动态代理"></a>自己实现一下 动态代理</h3><h4 id="定义接口："><a href="#定义接口：" class="headerlink" title="定义接口："></a>定义接口：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public interface UserListener &#123;</div><div class="line">    String getName();</div><div class="line"></div><div class="line">    int getAge();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="创建该接口的实现类："><a href="#创建该接口的实现类：" class="headerlink" title="创建该接口的实现类："></a>创建该接口的实现类：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">public class User implements UserListener &#123;</div><div class="line">    @Override</div><div class="line">    public String getName() &#123;</div><div class="line">        return &quot;lishaowei&quot;;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public int getAge() &#123;</div><div class="line">        return 25;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="创建动态代理类并实现InvocationHandler接口"><a href="#创建动态代理类并实现InvocationHandler接口" class="headerlink" title="创建动态代理类并实现InvocationHandler接口"></a>创建动态代理类并实现InvocationHandler接口</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">public class UserInvocation implements InvocationHandler &#123;</div><div class="line">    private Object target;</div><div class="line"></div><div class="line">    public UserInvocation(Object target) &#123;</div><div class="line">        this.target = target;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable &#123;</div><div class="line">        if (method.getName().equals(&quot;getName&quot;)) &#123;</div><div class="line">            String string = (String) method.invoke(target, args);</div><div class="line">            return string + &quot;嘿嘿哈&quot;;</div><div class="line">        &#125;else &#123;</div><div class="line">            int invoke = (int) method.invoke(target, args);</div><div class="line">            return invoke + 10;</div><div class="line"></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="使用动态代理类："><a href="#使用动态代理类：" class="headerlink" title="使用动态代理类："></a>使用动态代理类：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">public class MainActivity extends AppCompatActivity &#123;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</div><div class="line">        super.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_main3);</div><div class="line"></div><div class="line">        UserListener user = new User();</div><div class="line"></div><div class="line">        UserInvocation userInvocation = new UserInvocation(user);</div><div class="line">        UserListener u = (UserListener) Proxy.newProxyInstance(user.getClass().getClassLoader(), user.getClass().getInterfaces(), userInvocation);</div><div class="line">//</div><div class="line">        Log.e(&quot;proxy&quot;, u.getName());</div><div class="line">        Log.e(&quot;proxy&quot;, u.getAge() + &quot;&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>输出结果</strong></p>
+<ul>
+<li>15:55:42.022 29761-29761/com.boxfish.stu.drawboard E/proxy: lishaowei嘿嘿哈</li>
+<li>15:55:42.022 29761-29761/com.boxfish.stu.drawboard E/proxy: 35</li>
+</ul>
+<h2 id="Retrofit-create-方法源码"><a href="#Retrofit-create-方法源码" class="headerlink" title="Retrofit create()方法源码"></a>Retrofit create()方法源码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">public &lt;T&gt; T create(final Class&lt;T&gt; service) &#123;</div><div class="line">   Utils.validateServiceInterface(service);</div><div class="line">   if (validateEagerly) &#123;</div><div class="line">     eagerlyValidateMethods(service);</div><div class="line">   &#125;</div><div class="line">   return (T) Proxy.newProxyInstance(service.getClassLoader(), new Class&lt;?&gt;[] &#123; service &#125;,</div><div class="line">       new InvocationHandler() &#123;</div><div class="line">         private final Platform platform = Platform.get();</div><div class="line"></div><div class="line">         @Override public Object invoke(Object proxy, Method method, Object... args)</div><div class="line">             throws Throwable &#123;</div><div class="line">           // If the method is a method from Object then defer to normal invocation.</div><div class="line">           if (method.getDeclaringClass() == Object.class) &#123;</div><div class="line">             return method.invoke(this, args);</div><div class="line">           &#125;</div><div class="line">           if (platform.isDefaultMethod(method)) &#123;</div><div class="line">             return platform.invokeDefaultMethod(method, service, proxy, args);</div><div class="line">           &#125;</div><div class="line">           ServiceMethod serviceMethod = loadServiceMethod(method);</div><div class="line">           OkHttpCall okHttpCall = new OkHttpCall&lt;&gt;(serviceMethod, args);</div><div class="line">           return serviceMethod.callAdapter.adapt(okHttpCall);</div><div class="line">         &#125;</div><div class="line">       &#125;);</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>当我们把包含网络请求接口的类传入到Retrofit的create方法后，就会利用动态代理模式，将接口解析包装成ServiceMethod，再转化成OkHttpCall供OKhttp调用。</p>
+<p>动态代理借助java的反射特性，通过易写的接口与注解，帮助用户自动生成实际的对象，接口中方法真正的调用交给InvocationHandler。<br>当用户调用生成接口中的方法时，实际上调用了InvocationHandler中的invoke方法</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/07/10/2016_07_10_1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1630,7 +1793,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

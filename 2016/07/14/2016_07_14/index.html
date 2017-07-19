@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="GreenDao," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -93,17 +93,16 @@
 
 
 
-<meta name="description" content="关于GreenDaoGreenDao是一个将对象映射到SQLite数据库中的轻量且快速的ORM解决方案详情请看官网GreenDao  Maximum performance (probably the fastest ORM for Android); our benchmarks are open sourced too Easy to use powerful APIs covering re">
-<meta name="keywords" content="GreenDao">
+<meta name="description" content="Retrofit 2，对okhttp 进行了封装。 并且使用了动态代理。通过接口在运行时生成字节码，然后通过注解拼装HTTP请求。 Retrofit 2之动态代理动态代理是什么这里浅谈一下，代理是一种设计模式，分为动态代理和静态代理 没有代理，就是”调用者”直接实现”业务”有代理后，就是”调用者”通过 “对业务进行封装”的代理， 间接实现”业务” 静态代理比如说，你可以直接对数据库进行增删改查的s">
 <meta property="og:type" content="article">
-<meta property="og:title" content="GreenDao 3.0使用">
-<meta property="og:url" content="http://yoursite.com/2016/06/25/2016_06_26_4/index.html">
+<meta property="og:title" content="Retrofit 2 动态代理源码解读">
+<meta property="og:url" content="http://yoursite.com/2016/07/14/2016_07_14/index.html">
 <meta property="og:site_name" content="lishaowei">
-<meta property="og:description" content="关于GreenDaoGreenDao是一个将对象映射到SQLite数据库中的轻量且快速的ORM解决方案详情请看官网GreenDao  Maximum performance (probably the fastest ORM for Android); our benchmarks are open sourced too Easy to use powerful APIs covering re">
-<meta property="og:updated_time" content="2017-07-11T02:34:59.000Z">
+<meta property="og:description" content="Retrofit 2，对okhttp 进行了封装。 并且使用了动态代理。通过接口在运行时生成字节码，然后通过注解拼装HTTP请求。 Retrofit 2之动态代理动态代理是什么这里浅谈一下，代理是一种设计模式，分为动态代理和静态代理 没有代理，就是”调用者”直接实现”业务”有代理后，就是”调用者”通过 “对业务进行封装”的代理， 间接实现”业务” 静态代理比如说，你可以直接对数据库进行增删改查的s">
+<meta property="og:updated_time" content="2017-07-19T08:55:39.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GreenDao 3.0使用">
-<meta name="twitter:description" content="关于GreenDaoGreenDao是一个将对象映射到SQLite数据库中的轻量且快速的ORM解决方案详情请看官网GreenDao  Maximum performance (probably the fastest ORM for Android); our benchmarks are open sourced too Easy to use powerful APIs covering re">
+<meta name="twitter:title" content="Retrofit 2 动态代理源码解读">
+<meta name="twitter:description" content="Retrofit 2，对okhttp 进行了封装。 并且使用了动态代理。通过接口在运行时生成字节码，然后通过注解拼装HTTP请求。 Retrofit 2之动态代理动态代理是什么这里浅谈一下，代理是一种设计模式，分为动态代理和静态代理 没有代理，就是”调用者”直接实现”业务”有代理后，就是”调用者”通过 “对业务进行封装”的代理， 间接实现”业务” 静态代理比如说，你可以直接对数据库进行增删改查的s">
 
 
 
@@ -131,13 +130,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/06/25/2016_06_26_4/"/>
+  <link rel="canonical" href="http://yoursite.com/2016/07/14/2016_07_14/"/>
 
 
 
 
 
-  <title>GreenDao 3.0使用 | lishaowei</title>
+  <title>Retrofit 2 动态代理源码解读 | lishaowei</title>
   
 
 
@@ -276,7 +275,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/25/2016_06_26_4/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/07/14/2016_07_14/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="lishaowei">
@@ -293,7 +292,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">GreenDao 3.0使用</h1>
+          <h1 class="post-title" itemprop="name headline">Retrofit 2 动态代理源码解读</h1>
         
 
         <div class="post-meta">
@@ -305,8 +304,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-25T09:30:00+08:00">
-                2016-06-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-14T16:24:00+08:00">
+                2016-07-14
               </time>
             
 
@@ -328,8 +327,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/GreenDao/" itemprop="url" rel="index">
-                    <span itemprop="name">GreenDao</span>
+                  <a href="/categories/Retrofit/" itemprop="url" rel="index">
+                    <span itemprop="name">Retrofit</span>
                   </a>
                 </span>
 
@@ -346,7 +345,7 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a class="cloud-tie-join-count" href="/2016/06/25/2016_06_26_4/#comments" itemprop="discussionUrl">
+                <a class="cloud-tie-join-count" href="/2016/07/14/2016_07_14/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count join-count" itemprop="commentCount"></span>
                 </a>
               </span>
@@ -355,7 +354,7 @@
 
           
           
-             <span id="/2016/06/25/2016_06_26_4/" class="leancloud_visitors" data-flag-title="GreenDao 3.0使用">
+             <span id="/2016/07/14/2016_07_14/" class="leancloud_visitors" data-flag-title="Retrofit 2 动态代理源码解读">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -388,47 +387,25 @@
       
 
       
-        <h2 id="关于GreenDao"><a href="#关于GreenDao" class="headerlink" title="关于GreenDao"></a>关于GreenDao</h2><p>GreenDao是一个将对象映射到SQLite数据库中的轻量且快速的ORM解决方案<br>详情请看官网<a href="http://greenrobot.org/greendao/" target="_blank" rel="external">GreenDao</a></p>
+        <p>Retrofit 2，对okhttp 进行了封装。 并且使用了动态代理。<br>通过接口在运行时生成字节码，然后通过注解拼装HTTP请求。</p>
+<h2 id="Retrofit-2之动态代理"><a href="#Retrofit-2之动态代理" class="headerlink" title="Retrofit 2之动态代理"></a>Retrofit 2之动态代理</h2><h3 id="动态代理是什么"><a href="#动态代理是什么" class="headerlink" title="动态代理是什么"></a>动态代理是什么</h3><p>这里浅谈一下，代理是一种设计模式，分为动态代理和静态代理</p>
+<p>没有代理，就是”调用者”直接实现”业务”<br>有代理后，就是”调用者”通过 “对业务进行封装”的代理， 间接实现”业务”</p>
+<h4 id="静态代理"><a href="#静态代理" class="headerlink" title="静态代理"></a>静态代理</h4><p>比如说，你可以直接对数据库进行增删改查的sql语句操作，可是要封装成<br>增删改查的方法，就属于静态代理</p>
+<h4 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h4><p>动态代理是java中字节码生成技术。通过接口生成代理类。<br>将代理类交给<strong>InvocationHandler</strong>具体实现</p>
+<p><em>Retrofit中为了简化复杂的网络请求，通过动态代理的去处理解析与拼装。
+</em>希望给某个方法在执行的过程中添加权限控制或者打log，这时我们可以用动态代理生成后在handler中装饰多余的业务，从而保存原有的方法专注于业务本身（即AOP编程），例子在这里。<br>*在运行时“欺上瞒下”，比如360的插件化技术的实现</p>
+<h3 id="自己实现一下-动态代理"><a href="#自己实现一下-动态代理" class="headerlink" title="自己实现一下 动态代理"></a>自己实现一下 动态代理</h3><h4 id="定义接口："><a href="#定义接口：" class="headerlink" title="定义接口："></a>定义接口：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public interface UserListener &#123;</div><div class="line">    String getName();</div><div class="line"></div><div class="line">    int getAge();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="创建该接口的实现类："><a href="#创建该接口的实现类：" class="headerlink" title="创建该接口的实现类："></a>创建该接口的实现类：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">public class User implements UserListener &#123;</div><div class="line">    @Override</div><div class="line">    public String getName() &#123;</div><div class="line">        return &quot;lishaowei&quot;;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public int getAge() &#123;</div><div class="line">        return 25;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="创建动态代理类并实现InvocationHandler接口"><a href="#创建动态代理类并实现InvocationHandler接口" class="headerlink" title="创建动态代理类并实现InvocationHandler接口"></a>创建动态代理类并实现InvocationHandler接口</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">public class UserInvocation implements InvocationHandler &#123;</div><div class="line">    private Object target;</div><div class="line"></div><div class="line">    public UserInvocation(Object target) &#123;</div><div class="line">        this.target = target;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable &#123;</div><div class="line">        if (method.getName().equals(&quot;getName&quot;)) &#123;</div><div class="line">            String string = (String) method.invoke(target, args);</div><div class="line">            return string + &quot;嘿嘿哈&quot;;</div><div class="line">        &#125;else &#123;</div><div class="line">            int invoke = (int) method.invoke(target, args);</div><div class="line">            return invoke + 10;</div><div class="line"></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="使用动态代理类："><a href="#使用动态代理类：" class="headerlink" title="使用动态代理类："></a>使用动态代理类：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">public class MainActivity extends AppCompatActivity &#123;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</div><div class="line">        super.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_main3);</div><div class="line"></div><div class="line">        UserListener user = new User();</div><div class="line"></div><div class="line">        UserInvocation userInvocation = new UserInvocation(user);</div><div class="line">        UserListener u = (UserListener) Proxy.newProxyInstance(user.getClass().getClassLoader(), user.getClass().getInterfaces(), userInvocation);</div><div class="line">//</div><div class="line">        Log.e(&quot;proxy&quot;, u.getName());</div><div class="line">        Log.e(&quot;proxy&quot;, u.getAge() + &quot;&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>输出结果</strong></p>
 <ul>
-<li><strong>Maximum performance</strong> (probably the fastest ORM for Android); our benchmarks are open sourced too</li>
-<li><strong>Easy to use</strong> powerful APIs covering relations and joins</li>
-<li><strong>Minimal</strong> memory consumption</li>
-<li><strong>Small</strong> library size (&lt;100KB) to keep your build times low and to avoid the 65k method limit</li>
-<li><strong>Database encryption</strong> greenDAO supports SQLCipher to keep your user’s data safe</li>
-<li><strong>Strong community</strong> More than 5.000 GitHub stars show there is a strong and active community</li>
+<li>15:55:42.022 29761-29761/com.boxfish.stu.drawboard E/proxy: lishaowei嘿嘿哈</li>
+<li>15:55:42.022 29761-29761/com.boxfish.stu.drawboard E/proxy: 35</li>
 </ul>
-<p><em>为什么写英文，因为装逼啊</em></p>
-<h2 id="GreenDao-3-0使用"><a href="#GreenDao-3-0使用" class="headerlink" title="GreenDao 3.0使用"></a>GreenDao 3.0使用</h2><p>GreenDao 3.0采用注解的方式来定义实体类，通过gradle插件生成相应的代码。 <del>比3.0-的版本便捷了不知道多少倍</del></p>
-<h3 id="在as中导入相关的包"><a href="#在as中导入相关的包" class="headerlink" title="在as中导入相关的包"></a>在as中导入相关的包</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">compile&apos;org.greenrobot:greendao:3.0.1&apos;</div><div class="line">compile&apos;org.greenrobot:greendao-generator:3.0.0&apos;</div></pre></td></tr></table></figure>
-<h3 id="在项目build-gradle中进行配置："><a href="#在项目build-gradle中进行配置：" class="headerlink" title="在项目build.gradle中进行配置："></a>在项目build.gradle中进行配置：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">apply plugin: &apos;org.greenrobot.greendao&apos;</div><div class="line">buildscript &#123; </div><div class="line">    repositories &#123; </div><div class="line">        mavenCentral()    </div><div class="line">&#125;    </div><div class="line">dependencies &#123;</div><div class="line">    classpath &apos;org.greenrobot:greendao-gradle-plugin:3.0.0&apos;    </div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="选择生成的文件路径"><a href="#选择生成的文件路径" class="headerlink" title="选择生成的文件路径"></a>选择生成的文件路径</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    greendao&#123;</div><div class="line">        schemaVersion 4</div><div class="line">        daoPackage &apos;com.boxfish.stu.greendaodemo.gen&apos;</div><div class="line">        targetGenDir &apos;src/main/java&apos;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">dependencies&#123;</div><div class="line">        compile&apos;org.greenrobot:greendao:3.0.1&apos;</div><div class="line">        compile&apos;org.greenrobot:greendao-generator:3.0.0&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>在gradle的根模块中加入上述代码，就完成了我们的基本配置了。<br>属性介绍：</p>
-<ul>
-<li>schemaVersion–&gt; 指定数据库schema版本号，迁移等操作会用到;</li>
-<li>daoPackage –&gt; dao的包名，包名默认是entity所在的包；</li>
-<li>targetGenDir –&gt; 生成数据库文件的目录;<h3 id="创建一个实体类"><a href="#创建一个实体类" class="headerlink" title="创建一个实体类"></a>创建一个实体类</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">@Entity</div><div class="line">public class User &#123;</div><div class="line">    @Id </div><div class="line">    private Long id; </div><div class="line">    private String name; </div><div class="line">    @Transient </div><div class="line">    private int tempUsageCount; // not persisted  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="MakeProject"><a href="#MakeProject" class="headerlink" title="MakeProject"></a>MakeProject</h3><p>编译项目</p>
-<h3 id="GreenDao-初始化"><a href="#GreenDao-初始化" class="headerlink" title="GreenDao 初始化"></a>GreenDao 初始化</h3><p>新建一个Application 进行歌瑞应道的初始化<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">public class MyApplication extends Application &#123;</div><div class="line"> private DaoMaster.DevOpenHelper mHelper;</div><div class="line"> private SQLiteDatabase db;</div><div class="line"> private DaoMaster mDaoMaster;</div><div class="line"> private DaoSession mDaoSession;</div><div class="line"> public static MyApplication instances;</div><div class="line"> @Override    public void onCreate() &#123;</div><div class="line">     super.onCreate();</div><div class="line">     instances = this;</div><div class="line">     setDatabase();</div><div class="line"> &#125;</div><div class="line"> public static MyApplication getInstances()&#123;</div><div class="line">     return instances;</div><div class="line"> &#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> * 设置greenDao</div><div class="line"> */</div><div class="line">private void setDatabase() &#123;</div><div class="line">    // 通过 DaoMaster 的内部类 DevOpenHelper，你可以得到一个便利的 SQLiteOpenHelper 对象。</div><div class="line">    // 可能你已经注意到了，你并不需要去编写「CREATE TABLE」这样的 SQL 语句，因为 greenDAO 已经帮你做了。</div><div class="line">    // 注意：默认的 DaoMaster.DevOpenHelper 会在数据库升级时，删除所有的表，意味着这将导致数据的丢失。</div><div class="line">    // 所以，在正式的项目中，你还应该做一层封装，来实现数据库的安全升级。</div><div class="line">    mHelper = new DaoMaster.DevOpenHelper(this, &quot;notes-db&quot;, null);</div><div class="line">    db = mHelper.getWritableDatabase();</div><div class="line">    // 注意：该数据库连接属于 DaoMaster，所以多个 Session 指的是相同的数据库连接。 </div><div class="line">    mDaoMaster = new DaoMaster(db); </div><div class="line">    mDaoSession = mDaoMaster.newSession();</div><div class="line">&#125;</div><div class="line">public DaoSession getDaoSession() &#123;</div><div class="line">      return mDaoSession;</div><div class="line">&#125;</div><div class="line">public SQLiteDatabase getDb() &#123;</div><div class="line">      return db;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>在想操作的地方获取 UserDao对象</p>
-<h3 id="简单的增删改查"><a href="#简单的增删改查" class="headerlink" title="简单的增删改查"></a>简单的增删改查</h3><h4 id="增"><a href="#增" class="headerlink" title="增"></a>增</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mUser = new User((long)2,&quot;anye3&quot;);</div><div class="line">mUserDao.insert(mUser);//添加一个</div></pre></td></tr></table></figure>
-<h4 id="删"><a href="#删" class="headerlink" title="删"></a>删</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mUserDao.deleteByKey(id);</div></pre></td></tr></table></figure>
-<h4 id="改"><a href="#改" class="headerlink" title="改"></a>改</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mUser = new User((long)2,&quot;anye0803&quot;);</div><div class="line">mUserDao.update(mUser);</div></pre></td></tr></table></figure>
-<h4 id="查"><a href="#查" class="headerlink" title="查"></a>查</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">List&lt;User&gt; users = mUserDao.loadAll();</div><div class="line">String userName = &quot;&quot;;</div><div class="line">for (int i = 0; i &lt; users.size(); i++) &#123;</div><div class="line">    userName += users.get(i).getName()+&quot;,&quot;;</div><div class="line">&#125;</div><div class="line">mContext.setText(&quot;查询全部数据==&gt;&quot;+userName);</div></pre></td></tr></table></figure>
-<h3 id="greendao中的注解"><a href="#greendao中的注解" class="headerlink" title="greendao中的注解"></a>greendao中的注解</h3><ul>
-<li>@Entity 定义实体<br>@nameInDb 在数据库中的名字，如不写则为实体中类名<br>@indexes 索引<br>@createInDb 是否创建表，默认为true,false时不创建<br>@schema 指定架构名称为实体<br>@active 无论是更新生成都刷新</li>
-<li>@Id</li>
-<li>@NotNull 不为null</li>
-<li>@Unique 唯一约束</li>
-<li>@ToMany 一对多</li>
-<li>@OrderBy 排序</li>
-<li>@ToOne 一对一</li>
-<li>@Transient 不存储在数据库中</li>
-<li>@generated 由greendao产生的构造函数或方法</li>
-</ul>
-<h2 id="Happy-Ending"><a href="#Happy-Ending" class="headerlink" title="Happy Ending"></a>Happy Ending</h2><p>本文主要讲了基本用法，大家都懂。<br>下一章 则讲述怎么更新数据库的时候，保持老版本的数据的保存</p>
-<p>本章特别鸣谢[anye0803]对本文对大力支持</p>
+<h2 id="Retrofit-create-方法源码"><a href="#Retrofit-create-方法源码" class="headerlink" title="Retrofit create()方法源码"></a>Retrofit create()方法源码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">public &lt;T&gt; T create(final Class&lt;T&gt; service) &#123;</div><div class="line">   Utils.validateServiceInterface(service);</div><div class="line">   if (validateEagerly) &#123;</div><div class="line">     eagerlyValidateMethods(service);</div><div class="line">   &#125;</div><div class="line">   return (T) Proxy.newProxyInstance(service.getClassLoader(), new Class&lt;?&gt;[] &#123; service &#125;,</div><div class="line">       new InvocationHandler() &#123;</div><div class="line">         private final Platform platform = Platform.get();</div><div class="line"></div><div class="line">         @Override public Object invoke(Object proxy, Method method, Object... args)</div><div class="line">             throws Throwable &#123;</div><div class="line">           // If the method is a method from Object then defer to normal invocation.</div><div class="line">           if (method.getDeclaringClass() == Object.class) &#123;</div><div class="line">             return method.invoke(this, args);</div><div class="line">           &#125;</div><div class="line">           if (platform.isDefaultMethod(method)) &#123;</div><div class="line">             return platform.invokeDefaultMethod(method, service, proxy, args);</div><div class="line">           &#125;</div><div class="line">           ServiceMethod serviceMethod = loadServiceMethod(method);</div><div class="line">           OkHttpCall okHttpCall = new OkHttpCall&lt;&gt;(serviceMethod, args);</div><div class="line">           return serviceMethod.callAdapter.adapt(okHttpCall);</div><div class="line">         &#125;</div><div class="line">       &#125;);</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>当我们把包含网络请求接口的类传入到Retrofit的create方法后，就会利用动态代理模式，将接口解析包装成ServiceMethod，再转化成OkHttpCall供OKhttp调用。</p>
+<p>动态代理借助java的反射特性，通过易写的接口与注解，帮助用户自动生成实际的对象，接口中方法真正的调用交给InvocationHandler。<br>当用户调用生成接口中的方法时，实际上调用了InvocationHandler中的invoke方法</p>
 
       
     </div>
@@ -477,12 +454,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/GreenDao/" rel="tag"># GreenDao</a>
-          
-        </div>
-      
 
       
       
@@ -492,8 +463,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/05/02/2016_05_02_3/" rel="next" title="Retrofit2.0 + OkHttp3.0的配置使用">
-                <i class="fa fa-chevron-left"></i> Retrofit2.0 + OkHttp3.0的配置使用
+              <a href="/2016/07/10/2016_07_10_1/" rel="next" title="Git-Flow 使用总结">
+                <i class="fa fa-chevron-left"></i> Git-Flow 使用总结
               </a>
             
           </div>
@@ -502,8 +473,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/07/10/2016_07_10_1/" rel="prev" title="Git-Flow 使用总结">
-                Git-Flow 使用总结 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/07/05/2017_07_05_2/" rel="prev" title="用InteliJ IDEA 写一个适用于生成的mvp插件">
+                用InteliJ IDEA 写一个适用于生成的mvp插件 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -669,7 +640,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于GreenDao"><span class="nav-number">1.</span> <span class="nav-text">关于GreenDao</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GreenDao-3-0使用"><span class="nav-number">2.</span> <span class="nav-text">GreenDao 3.0使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在as中导入相关的包"><span class="nav-number">2.1.</span> <span class="nav-text">在as中导入相关的包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在项目build-gradle中进行配置："><span class="nav-number">2.2.</span> <span class="nav-text">在项目build.gradle中进行配置：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择生成的文件路径"><span class="nav-number">2.3.</span> <span class="nav-text">选择生成的文件路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个实体类"><span class="nav-number">2.4.</span> <span class="nav-text">创建一个实体类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MakeProject"><span class="nav-number">2.5.</span> <span class="nav-text">MakeProject</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GreenDao-初始化"><span class="nav-number">2.6.</span> <span class="nav-text">GreenDao 初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的增删改查"><span class="nav-number">2.7.</span> <span class="nav-text">简单的增删改查</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#增"><span class="nav-number">2.7.1.</span> <span class="nav-text">增</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删"><span class="nav-number">2.7.2.</span> <span class="nav-text">删</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#改"><span class="nav-number">2.7.3.</span> <span class="nav-text">改</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查"><span class="nav-number">2.7.4.</span> <span class="nav-text">查</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#greendao中的注解"><span class="nav-number">2.8.</span> <span class="nav-text">greendao中的注解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Happy-Ending"><span class="nav-number">3.</span> <span class="nav-text">Happy Ending</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Retrofit-2之动态代理"><span class="nav-number">1.</span> <span class="nav-text">Retrofit 2之动态代理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#动态代理是什么"><span class="nav-number">1.1.</span> <span class="nav-text">动态代理是什么</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#静态代理"><span class="nav-number">1.1.1.</span> <span class="nav-text">静态代理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动态代理"><span class="nav-number">1.1.2.</span> <span class="nav-text">动态代理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自己实现一下-动态代理"><span class="nav-number">1.2.</span> <span class="nav-text">自己实现一下 动态代理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义接口："><span class="nav-number">1.2.1.</span> <span class="nav-text">定义接口：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建该接口的实现类："><span class="nav-number">1.2.2.</span> <span class="nav-text">创建该接口的实现类：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建动态代理类并实现InvocationHandler接口"><span class="nav-number">1.2.3.</span> <span class="nav-text">创建动态代理类并实现InvocationHandler接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用动态代理类："><span class="nav-number">1.2.4.</span> <span class="nav-text">使用动态代理类：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Retrofit-create-方法源码"><span class="nav-number">2.</span> <span class="nav-text">Retrofit create()方法源码</span></a></li></ol></div>
             
 
           </div>
