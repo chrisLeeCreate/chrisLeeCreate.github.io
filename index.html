@@ -773,6 +773,136 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/05/2016_08_5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lishaowei">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headicon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="lishaowei">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/08/05/2016_08_5/" itemprop="url">Service 和IntentService的区别</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-05T16:20:00+08:00">
+                2016-08-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016/08/05/2016_08_5/" class="leancloud_visitors" data-flag-title="Service 和IntentService的区别">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h2><p>Service 是长期运行在后台的应用程序组件。</p>
+<p>Service 不是一个单独的进程，它和应用程序在同一个进程中，Service 也不是一个线程,它和线程没有任何关系，所以它不能直接处理耗时操作。如果直接把耗时操作放在 Service 的 onStartCommand() 中，很容易引起 ANR .如果有耗时操作就必须开启一个单独的线程来处理</p>
+<h2 id="IntentService"><a href="#IntentService" class="headerlink" title="IntentService"></a>IntentService</h2><p>IntentService 是继承于 Service 并处理异步请求的一个类，在 IntentService 内有一个工作线程来处理耗时操作，启动 IntentService 的方式和启动传统 Service 一样，同时，当任务执行完后，IntentService 会自动停止，而不需要我们去手动控制。另外，可以启动 IntentService 多次，而每一个耗时操作会以工作队列的方式在IntentService 的 onHandleIntent 回调方法中执行，并且，每次只会执行一个工作线程，执行完第一个再执行第二个，以此类推。</p>
+<p>而且，所有请求都在一个单线程中，不会阻塞应用程序的主线程（UI Thread），同一时间只处理一个请求。 那么，用 IntentService 有什么好处呢？首先，我们省去了在 Service 中手动开线程的麻烦，第二，当操作完成时，我们不用手动停止 Service</p>
+<h2 id="IntentService源码"><a href="#IntentService源码" class="headerlink" title="IntentService源码"></a>IntentService源码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div></pre></td><td class="code"><pre><div class="line">public abstract class IntentService extends Service &#123;</div><div class="line">    private volatile Looper mServiceLooper;</div><div class="line">    private volatile ServiceHandler mServiceHandler;</div><div class="line">    private String mName;</div><div class="line">    private boolean mRedelivery;</div><div class="line"></div><div class="line">    private final class ServiceHandler extends Handler &#123;</div><div class="line">        public ServiceHandler(Looper looper) &#123;</div><div class="line">            super(looper);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        @Override</div><div class="line">        public void handleMessage(Message msg) &#123;</div><div class="line">            onHandleIntent((Intent)msg.obj);</div><div class="line">            stopSelf(msg.arg1);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public IntentService(String name) &#123;</div><div class="line">        super();</div><div class="line">        mName = name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void setIntentRedelivery(boolean enabled) &#123;</div><div class="line">        mRedelivery = enabled;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onCreate() &#123;</div><div class="line">        // TODO: It would be nice to have an option to hold a partial wakelock</div><div class="line">        // during processing, and to have a static startService(Context, Intent)</div><div class="line">        // method that would launch the service &amp; hand off a wakelock.</div><div class="line"></div><div class="line">        super.onCreate();</div><div class="line">        HandlerThread thread = new HandlerThread(&quot;IntentService[&quot; + mName + &quot;]&quot;);</div><div class="line">        thread.start();</div><div class="line"></div><div class="line">        mServiceLooper = thread.getLooper();</div><div class="line">        mServiceHandler = new ServiceHandler(mServiceLooper);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onStart(@Nullable Intent intent, int startId) &#123;</div><div class="line">        Message msg = mServiceHandler.obtainMessage();</div><div class="line">        msg.arg1 = startId;</div><div class="line">        msg.obj = intent;</div><div class="line">        mServiceHandler.sendMessage(msg);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public int onStartCommand(@Nullable Intent intent, int flags, int startId) &#123;</div><div class="line">        onStart(intent, startId);</div><div class="line">        return mRedelivery ? START_REDELIVER_INTENT : START_NOT_STICKY;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onDestroy() &#123;</div><div class="line">        mServiceLooper.quit();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    @Nullable</div><div class="line">    public IBinder onBind(Intent intent) &#123;</div><div class="line">        return null;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    </div><div class="line">    protected abstract void onHandleIntent(@Nullable Intent intent);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="IntentService源码解读"><a href="#IntentService源码解读" class="headerlink" title="IntentService源码解读"></a>IntentService源码解读</h2><p>可以看出，当create的时候，会创建一个线程，启动一个ServiceHandler。<br>如果开启多次service比如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">Intent startServiceIntent = new Intent(this,MyIntentService2.class);</div><div class="line">Bundle bundle = new Bundle();</div><div class="line">bundle.putString(&quot;param&quot;, &quot;oper1&quot;);</div><div class="line">startServiceIntent.putExtras(bundle);</div><div class="line">startService(startServiceIntent);</div><div class="line"> </div><div class="line">//Operation 2</div><div class="line">Intent startServiceIntent2 = new Intent(this,MyIntentService2.class);</div><div class="line">Bundle bundle2 = new Bundle();</div><div class="line">bundle2.putString(&quot;param&quot;, &quot;oper2&quot;);</div><div class="line">startServiceIntent2.putExtras(bundle2);</div><div class="line">startService(startServiceIntent2);</div></pre></td></tr></table></figure></p>
+<p>他们的生命周期是:<br>onCreate -&gt; onStartCommand -&gt; onStart -&gt; onStartCommand -&gt; onStart -&gt; Operation1 -&gt; Operation2 -&gt; onDestroy</p>
+<p>onCreate 方法只执行了一次，而 onStartCommand 和 onStart 方法执行了两次，开启了两个 Work Thread，这就证实了之前所说的，启动多次，但IntentService 的实例只有一个，这跟传统的 Service 是一样的。Operation1 也是先于 Operation2 打印.最后是 onDestroy 销毁了IntentService。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/08/01/2016_08_1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -884,7 +1014,7 @@
 <p><strong>实现代码</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Created by lishaowei on 2017/8/2.</div><div class="line"> */</div><div class="line"></div><div class="line">public class InsertSort &#123;</div><div class="line">    public static void sort(int[] args) &#123;</div><div class="line">        for (int i = 1; i &lt; args.length; i++) &#123;</div><div class="line">            for (int j = 0; j &lt; i; j++) &#123;</div><div class="line"></div><div class="line">                if (args[i] &lt; args[j]) &#123;</div><div class="line">                    insertArray(args, j, i);</div><div class="line">                    break;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private static void insertArray(int[] args, int start, int end) &#123;</div><div class="line">        int temp = args[end];</div><div class="line">        for (int i = end; i &gt; start; i--) &#123;</div><div class="line">            args[i] = args[i - 1];</div><div class="line">        &#125;</div><div class="line">        args[start] = temp;</div><div class="line"></div><div class="line"></div><div class="line">        System.out.print(&quot;这一次的变化：&quot;);</div><div class="line">        for (Integer i : args) &#123;</div><div class="line">            System.out.print(i + &quot; &quot;);</div><div class="line">        &#125;</div><div class="line">        System.out.println();</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    public static void main(String[] args) &#123;</div><div class="line">        int[] array = new int[]&#123;5, 3, 8, 6, 4&#125;;</div><div class="line">        sort(array);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h2 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h2><p>所谓的快速排序的思想就是，首先把数组的第一个数拿出来做为一个key，在前后分别设置一个i,j做为标识，然后拿这个key对这个数组从后面往前遍历，及j–，直到找到第一个小于这个key的那个数，然后交换这两个值，交换完成后，我们拿着这个key要从i往后遍历了，及i++;一直循环到i=j结束，当这里结束后，我们会发现大于这个key的值都会跑到这个key的后面，不是的话就可能你写错了，小于这个key的就会跑到这个值的前面；然后我们对这个分段的数组再时行递归调用就可以完成整个数组的排序。</p>
 <p><img src="/images/mvp_helper/quicksort.png" width="800"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">public class QuickSort &#123;</div><div class="line">/**</div><div class="line"> * Created by lishaowei on 2017/8/2.</div><div class="line"> */</div><div class="line">    public static void main(String[] args) &#123;</div><div class="line">        int[] array = &#123;48, 15, 24, 59, 64, 79, 97, 40&#125;;</div><div class="line">        sorts(array, 0, array.length - 1);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private static void sorts(int[] array, int low, int hight) &#123;</div><div class="line">        if (low&gt;=hight)&#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        int index = partition(array, low, hight);</div><div class="line">        sorts(array, low, index - 1);</div><div class="line">        sorts(array, index + 1, hight);</div><div class="line">        System.out.println(Arrays.toString(array));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private static int partition(int[] array, int low, int hight) &#123;</div><div class="line">        int key = array[low];</div><div class="line">        while (low &lt; hight) &#123;</div><div class="line">            while (array[hight] &gt;= key &amp;&amp; low &lt; hight) &#123;</div><div class="line">                hight--;</div><div class="line">            &#125;</div><div class="line">            array[low] = array[hight];</div><div class="line"></div><div class="line">            while (array[low] &lt;= key &amp;&amp; low &lt; hight) &#123;</div><div class="line">                low++;</div><div class="line">            &#125;</div><div class="line">            array[hight] = array[low];</div><div class="line">        &#125;</div><div class="line">        array[hight] = key;</div><div class="line">        return hight;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">public class QuickSort &#123;</div><div class="line">/**</div><div class="line"> * Created by lishaowei on 2017/8/2.</div><div class="line"> */</div><div class="line">    public static void main(String[] args) &#123;</div><div class="line">        int[] array = &#123;48, 15, 24, 59, 64, 79, 97, 40&#125;;</div><div class="line">        sorts(array, 0, array.length - 1);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private static void sorts(int[] array, int low, int hight) &#123;</div><div class="line">        if (low&gt;=hight)&#123;</div><div class="line">            return;</div><div class="line">        &#125;git</div><div class="line">        int index = partition(array, low, hight);</div><div class="line">        sorts(array, low, index - 1);</div><div class="line">        sorts(array, index + 1, hight);</div><div class="line">        System.out.println(Arrays.toString(array));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private static int partition(int[] array, int low, int hight) &#123;</div><div class="line">        int key = array[low];</div><div class="line">        while (low &lt; hight) &#123;</div><div class="line">            while (array[hight] &gt;= key &amp;&amp; low &lt; hight) &#123;</div><div class="line">                hight--;</div><div class="line">            &#125;</div><div class="line">            array[low] = array[hight];</div><div class="line"></div><div class="line">            while (array[low] &lt;= key &amp;&amp; low &lt; hight) &#123;</div><div class="line">                low++;</div><div class="line">            &#125;</div><div class="line">            array[hight] = array[low];</div><div class="line">        &#125;</div><div class="line">        array[hight] = key;</div><div class="line">        return hight;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h2><p>归并排序是另一种不同的排序方法，因为归并排序使用了递归分治的思想，所以理解起来比较容易。其基本思想是，先递归划分子问题，然后合并结果。把待排序列看成由两个有序的子序列，然后合并两个子序列，然后把子序列看成由两个有序序列。。。。。倒着来看，其实就是先两两合并，然后四四合并。。。最终形成有序序列。空间复杂度为O(n)，时间复杂度为O(nlogn)。<br><img src="/images/mvp_helper/merge.png" width="800"><br><strong>代码实现</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line">public class MergeSort &#123;</div><div class="line">    static int number = 0;</div><div class="line"></div><div class="line">    public static void main(String[] args) &#123;</div><div class="line">        int[] array = new int[]&#123;2, 7, 3, 5, 2, 1, 0, 9&#125;;</div><div class="line">        System.out.println(&quot;排序前&quot; + Arrays.toString(array));</div><div class="line">        sort(array, 0, array.length - 1);</div><div class="line">        System.out.println(&quot;排序后&quot; + Arrays.toString(array));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public static void sort(int[] array, int start, int end) &#123;</div><div class="line">        if (start &gt;= end) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        int mid = (start + end) / 2;</div><div class="line">        sort(array, start, mid);</div><div class="line">        sort(array, mid + 1, end);</div><div class="line">        merge(array, start, mid, end);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private static void merge(int[] array, int start, int mid, int end) &#123;</div><div class="line"></div><div class="line">        int[] tempArray = new int[array.length];</div><div class="line">        int Tmid = mid + 1;</div><div class="line">        int Tstart = start;</div><div class="line">        int cstart = start;</div><div class="line"></div><div class="line">        while (start &lt;= mid &amp;&amp; Tmid &lt;= end) &#123;</div><div class="line">            if (array[start] &lt;= array[Tmid]) &#123;</div><div class="line">                tempArray[Tstart++] = array[start++];</div><div class="line">            &#125; else &#123;</div><div class="line">                tempArray[Tstart++] = array[Tmid++];</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        while (start &lt;= mid) &#123;</div><div class="line">            tempArray[Tstart++] = array[start++];</div><div class="line">        &#125;</div><div class="line">        while (Tmid &lt;= end) &#123;</div><div class="line">            tempArray[Tstart++] = array[Tmid++];</div><div class="line">        &#125;</div><div class="line">        System.out.println(&quot;第&quot; + number + &quot;排序&quot;);</div><div class="line">        //从临时数组拷贝到原数组</div><div class="line">        while (cstart &lt;= end) &#123;</div><div class="line">            array[cstart] = tempArray[cstart];</div><div class="line">            //输出中间归并排序结果</div><div class="line">            System.out.print(array[cstart] + &quot;\t&quot;);</div><div class="line">            cstart++;</div><div class="line">        &#125;</div><div class="line">        System.out.println();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
@@ -1752,162 +1882,13 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/02/markdown_study/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="lishaowei">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/headicon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="lishaowei">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/03/02/markdown_study/" itemprop="url">Mark Down 学习</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-02T10:48:00+08:00">
-                2016-03-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2016/03/02/markdown_study/" class="leancloud_visitors" data-flag-title="Mark Down 学习">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近写博客，免不了好好学习一下mark down，这里就整理下学习笔记</p>
-<p>#一级标签</p>
-<p>##二级标签</p>
-<p>###三级标签</p>
-<p>#分段</p>
-<p>第一行<br>相邻被视为同一段落</p>
-<p>第一行</p>
-<p>两行之间存在空行，才视为不同段落</p>
-<p>#字体</p>
-<p><em>倾斜</em></p>
-<p><strong>粗体</strong></p>
-<p><del>删除线</del></p>
-<blockquote>
-<p>印用</p>
-</blockquote>
-<p>#网页和图片🔗</p>
-<p><a href="http://www.eason-li.cn" target="_blank" rel="external">lishaowei</a><br><img src="http://cdn.lizhi.fm/radio_cover/2014/06/30/12640325514277380.jpg" alt="lishaowei"></p>
-<p>#列表</p>
-<ul>
-<li>项目</li>
-<li>项目</li>
-<li>项目<ul>
-<li>子项目</li>
-<li>子项目</li>
-</ul>
-</li>
-<li>项目</li>
-</ul>
-<p>#代码</p>
-<p>##行内代码<br>一句话<code>行内代码</code>一句话。</p>
-<p>##多行代码<br>​<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 我是注释</span></div><div class="line"><span class="keyword">int</span> a = <span class="number">5</span>;</div><div class="line">​</div></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -1950,7 +1931,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
